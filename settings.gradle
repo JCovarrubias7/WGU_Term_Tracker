@@ -1,0 +1,2 @@
+rootProject.name='WGU Term Tracker JC'
+include ':app'
