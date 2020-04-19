@@ -66,6 +66,13 @@ public class AllTerms extends AppCompatActivity {
        displayDatabaseInfo();
     }
 
+    //When we get back to the activity make sure we get the information again from the DB
+    @Override
+    protected void onStart() {
+        super.onStart();
+        displayDatabaseInfo();
+    }
+
     private void displayDatabaseInfo() {
         // To access our database, we instantiate our subclass of SQLiteOpenHelper
         // and pass the context, which is the current activity.
@@ -89,6 +96,7 @@ public class AllTerms extends AppCompatActivity {
         }
     }
 
+    // Create the data that will be inserted from the menu option Insert Test Data.
     private void insertTestTerm() {
         TermDBHelper mDbHelper = new TermDBHelper(this);
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -96,7 +104,7 @@ public class AllTerms extends AppCompatActivity {
         // Create a ContentValues object where column names are the keys,
         // and Term attributes are the the values.
         ContentValues values = new ContentValues();
-        values.put(TermEntry.COLUMN_TERM_TITLE, "Term 1");
+        values.put(TermEntry.COLUMN_TERM_NAME, "Term 1");
         values.put(TermEntry.COLUMN_TERM_START_DATE, "05/01/2020");
         values.put(TermEntry.COLUMN_TERM_END_DATE, "11/01/2020");
 
@@ -111,6 +119,7 @@ public class AllTerms extends AppCompatActivity {
         return true;
     }
 
+    // Declare what to do with the items in the menu when clicked
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
