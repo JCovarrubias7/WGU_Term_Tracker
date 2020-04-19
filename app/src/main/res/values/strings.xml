@@ -12,10 +12,20 @@
     <string name="title_activity_term_view">Term View</string>
     <string name="title_activity_course_view">CourseView</string>
     <string name="title_activity_assessment_view">Assessment View</string>
-    <string name="title_activity_add_term">Add A Term</string>
+    <string name="title_activity_add_term">Add a Term</string>
 
     <!-- All Terms Screen Menu strings -->
     <string name="insert_test_data">Insert Test Data</string>
     <string name="delete_all_terms">Delete All Terms</string>
+
+    <!-- Add Term TextView strings -->
+    <string name="term_name">Term Name</string>
+    <string name="term_start_date">Term Start Date</string>
+    <string name="term_end_date">Term End Date</string>
+    <string name="term_name_hint">Term 1</string>
+    <string name="term_start_date_hint">05/01/2020</string>
+    <string name="term_end_date_hint">11/01/2020</string>
+    <string name="term_save_button">Save</string>
+
 
 </resources>
