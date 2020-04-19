@@ -33,7 +33,7 @@ public final class TermContract {
         public static final String TABLE_NAME = "terms";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUMN_TERM_TITLE = "term_title";
+        public static final String COLUMN_TERM_NAME = "term_name";
         public static final String COLUMN_TERM_START_DATE = "term_start_date";
         public static final String COLUMN_TERM_END_DATE = "term_end_date";
     }

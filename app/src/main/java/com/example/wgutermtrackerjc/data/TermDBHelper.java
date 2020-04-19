@@ -22,7 +22,7 @@ public class TermDBHelper extends SQLiteOpenHelper {
         // Create a String that contains the SQL statement to create the terms table
         String SQL_CREATE_TERMS_TABLE = "CREATE TABLE " + TermEntry.TABLE_NAME + " ("
                 + TermEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + TermEntry.COLUMN_TERM_TITLE + " TEXT NOT NULL, "
+                + TermEntry.COLUMN_TERM_NAME + " TEXT NOT NULL, "
                 + TermEntry.COLUMN_TERM_START_DATE + " TEXT NOT NULL, "
                 + TermEntry.COLUMN_TERM_END_DATE + " TEXT NOT NULL);";
 
