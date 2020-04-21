@@ -1,11 +1,10 @@
 package com.example.wgutermtrackerjc;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.wgutermtrackerjc.data.TermContract.TermEntry;
-import com.example.wgutermtrackerjc.data.TermDBHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -13,7 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class AddTerm extends AppCompatActivity {
 
@@ -67,11 +65,6 @@ public class AddTerm extends AppCompatActivity {
             termEndDateString = null;
         }
 
-        // Create database helper
-        TermDBHelper mDbHelper = new TermDBHelper(this);
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         // Create the ContentValues object where column names are the keys,
         // and the input fields for the term are the values
         ContentValues values = new ContentValues();
@@ -80,15 +73,9 @@ public class AddTerm extends AppCompatActivity {
         values.put(TermEntry.COLUMN_TERM_END_DATE, termEndDateString);
 
         // Insert a new row into the database and return the ID of the new row
-        long newRowId = db.insert(TermEntry.TABLE_NAME, null, values);
+        //long newRowId = db.insert(TermEntry.TABLE_NAME, null, values);
+        Uri newUri = getContentResolver().insert(TermEntry.CONTENT_URI, values);
 
-        // Show a toast message whether or not the insertion was successful
-        if (newRowId == -1) {
-            Toast.makeText(this, "Error saving the term", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Toast.makeText(this, "Term saved with row id: " + newRowId, Toast.LENGTH_SHORT).show();
-        }
     }
 
 
