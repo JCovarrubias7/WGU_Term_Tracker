@@ -31,4 +31,7 @@
     <string name="list_item_start_date">Start Date: </string>
     <string name="list_item_end_date">End Date: </string>
 
+    <!-- empty TextView text -->
+    <string name="empty_term_text">Click the button to add a term</string>
+
 </resources>

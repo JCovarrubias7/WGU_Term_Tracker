@@ -87,7 +87,11 @@ public class AllTerms extends AppCompatActivity {
         // Find the ListView which will be populated with the term data
         ListView termListView = (ListView) findViewById(R.id.all_terms_list);
 
-        //Setup aan Adapter to create a list item for each row of term data in the Cursor
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items
+        View emptyView = findViewById(R.id.empty_term_view);
+        termListView.setEmptyView(emptyView);
+
+        //Setup an Adapter to create a list item for each row of term data in the Cursor
         TermCursorAdapter adapter = new TermCursorAdapter(this, cursor);
 
         // Attach the adapter to the list view
