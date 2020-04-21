@@ -3,14 +3,11 @@ package com.example.wgutermtrackerjc;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.wgutermtrackerjc.data.TermContract;
 import com.example.wgutermtrackerjc.data.TermContract.TermEntry;
-import com.example.wgutermtrackerjc.data.TermDBHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -74,21 +71,43 @@ public class AllTerms extends AppCompatActivity {
     }
 
     private void displayDatabaseInfo() {
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        TermDBHelper mDbHelper = new TermDBHelper(this);
+        //Define a projection that specifies what columns from the database you want to use
+        String[] projection = {
+                TermEntry.COLUMN_TERM_NAME,
+                TermEntry.COLUMN_TERM_START_DATE,
+                TermEntry.COLUMN_TERM_END_DATE
+        };
 
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        //Perform a query on the Terms table using the ContentResolver
+        Cursor cursor = getContentResolver().query(TermEntry.CONTENT_URI, projection,
+                null, null, null);
 
-        // Perform this raw SQL query "SELECT * FROM pets"
-        // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TermContract.TermEntry.TABLE_NAME, null);
+        TextView displayView = (TextView) findViewById(R.id.text_view_term);
+
         try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.text_view_term);
-            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+            // Text to display using the info from the database
+            displayView.setText("The terms table contains " + cursor.getCount() + " terms. \n \n");
+            // Write out the columns (Header) to make it easier to read for now
+            displayView.append(TermEntry.COLUMN_TERM_NAME + " - " +
+                    TermEntry.COLUMN_TERM_START_DATE + " - " +
+                    TermEntry.COLUMN_TERM_END_DATE + "\n");
+
+            // Get the index value for each column
+            int nameColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_NAME);
+            int startColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_START_DATE);
+            int endColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_END_DATE);
+
+            // Iterate through all the returned rows in the cursor
+            while (cursor.moveToNext()) {
+                String currentName = cursor.getString(nameColumnIndex);
+                String currentStart = cursor.getString(startColumnIndex);
+                String currentEnd = cursor.getString(endColumnIndex);
+
+                // Display the values from each column of the current row in the cursor in the TextView
+                displayView.append(("\n" + currentName + " - " +
+                        currentStart + " - " +
+                        currentEnd));
+            }
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.
@@ -98,9 +117,6 @@ public class AllTerms extends AppCompatActivity {
 
     // Create the data that will be inserted from the menu option Insert Test Data.
     private void insertTestTerm() {
-        TermDBHelper mDbHelper = new TermDBHelper(this);
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
         // Create a ContentValues object where column names are the keys,
         // and Term attributes are the the values.
         ContentValues values = new ContentValues();
@@ -108,8 +124,9 @@ public class AllTerms extends AppCompatActivity {
         values.put(TermEntry.COLUMN_TERM_START_DATE, "05/01/2020");
         values.put(TermEntry.COLUMN_TERM_END_DATE, "11/01/2020");
 
-        //Insert a new row into the terms Database
-        long newRowId = db.insert(TermEntry.TABLE_NAME, null, values);
+        // Insert a new row into the database and return the ID of the new row
+        //long newRowId = db.insert(TermEntry.TABLE_NAME, null, values);
+        Uri newUri = getContentResolver().insert(TermEntry.CONTENT_URI, values);
     }
 
     @Override
@@ -131,7 +148,8 @@ public class AllTerms extends AppCompatActivity {
                 return true;
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_terms:
-                //showDeleteConfirmationDialog();
+                int newDeletedRows = getContentResolver().delete(TermEntry.CONTENT_URI, null, null);
+                displayDatabaseInfo();
                 return true;
         }
         return super.onOptionsItemSelected(item);
