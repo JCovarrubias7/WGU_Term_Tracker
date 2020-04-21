@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 public final class TermContract {
 
     // Content Authority string similar to the relationship between a domain name and its website.
-    public static final String CONTENT_AUTHORITY = "com.example.android.wgutermtrackerjc";
+    public static final String CONTENT_AUTHORITY = "com.example.wgutermtrackerjc";
 
     // user Content Authority to create the base of all URI's which apps will use to contact the
     // content provider.
