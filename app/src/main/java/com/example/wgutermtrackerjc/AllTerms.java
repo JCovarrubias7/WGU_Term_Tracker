@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class AllTerms extends AppCompatActivity {
@@ -73,6 +74,7 @@ public class AllTerms extends AppCompatActivity {
     private void displayDatabaseInfo() {
         //Define a projection that specifies what columns from the database you want to use
         String[] projection = {
+                TermEntry._ID,
                 TermEntry.COLUMN_TERM_NAME,
                 TermEntry.COLUMN_TERM_START_DATE,
                 TermEntry.COLUMN_TERM_END_DATE
@@ -82,37 +84,14 @@ public class AllTerms extends AppCompatActivity {
         Cursor cursor = getContentResolver().query(TermEntry.CONTENT_URI, projection,
                 null, null, null);
 
-        TextView displayView = (TextView) findViewById(R.id.text_view_term);
+        // Find the ListView which will be populated with the term data
+        ListView termListView = (ListView) findViewById(R.id.all_terms_list);
 
-        try {
-            // Text to display using the info from the database
-            displayView.setText("The terms table contains " + cursor.getCount() + " terms. \n \n");
-            // Write out the columns (Header) to make it easier to read for now
-            displayView.append(TermEntry.COLUMN_TERM_NAME + " - " +
-                    TermEntry.COLUMN_TERM_START_DATE + " - " +
-                    TermEntry.COLUMN_TERM_END_DATE + "\n");
+        //Setup aan Adapter to create a list item for each row of term data in the Cursor
+        TermCursorAdapter adapter = new TermCursorAdapter(this, cursor);
 
-            // Get the index value for each column
-            int nameColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_NAME);
-            int startColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_START_DATE);
-            int endColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_END_DATE);
-
-            // Iterate through all the returned rows in the cursor
-            while (cursor.moveToNext()) {
-                String currentName = cursor.getString(nameColumnIndex);
-                String currentStart = cursor.getString(startColumnIndex);
-                String currentEnd = cursor.getString(endColumnIndex);
-
-                // Display the values from each column of the current row in the cursor in the TextView
-                displayView.append(("\n" + currentName + " - " +
-                        currentStart + " - " +
-                        currentEnd));
-            }
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
-        }
+        // Attach the adapter to the list view
+        termListView.setAdapter(adapter);
     }
 
     // Create the data that will be inserted from the menu option Insert Test Data.
