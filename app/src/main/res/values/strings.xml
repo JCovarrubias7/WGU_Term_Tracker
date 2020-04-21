@@ -27,5 +27,8 @@
     <string name="term_end_date_hint">11/01/2020</string>
     <string name="term_save_button">Save</string>
 
+    <!-- list_item TextView Strings -->
+    <string name="list_item_start_date">Start Date: </string>
+    <string name="list_item_end_date">End Date: </string>
 
 </resources>
