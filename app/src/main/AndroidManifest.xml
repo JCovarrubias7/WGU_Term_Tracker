@@ -21,6 +21,7 @@
         <activity
             android:name=".CourseView"
             android:label="@string/title_activity_course_view"
+            android:parentActivityName=".AllTerms"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TermView"
