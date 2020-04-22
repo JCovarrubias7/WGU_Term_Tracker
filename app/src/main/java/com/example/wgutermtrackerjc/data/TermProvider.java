@@ -62,6 +62,9 @@ public class TermProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI" + uri);
         }
+        // Set notification URI on the Cursor
+        // If the data changes on the URI, then we update the cursor
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
