@@ -15,9 +15,12 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CourseView extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -78,6 +81,47 @@ public class CourseView extends AppCompatActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu options from the res/menu/menu_terms.xml file
+        getMenuInflater().inflate(R.menu.menu_delete_term, menu);
+        return true;
+    }
+
+    // Declare what to do with the items in the menu when clicked
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            // Respond to a click on the "Insert test data" menu option
+            case R.id.action_delete_current_term:
+                deleteTerm();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteTerm() {
+        // Only perform the delete if there is an existing term
+        if (mCurrentTermUri != null) {
+            // Call the ContentResolver to delete the product at the given URI.
+            int rowsDeleted = getContentResolver().delete(mCurrentTermUri, null, null);
+            // Show toast depending on whether or not the deletion was successful.
+            if (rowsDeleted == 0) {
+                // If no rows were deleted, then there was an error with the delete.
+                Toast.makeText(this, "Error with deleting the term",
+                        Toast.LENGTH_SHORT).show();
+            }
+            else {
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText(this, "Term deleted successfully",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+        // Close the activity
+        finish();
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         // Get the columns from the table using the URI.
         // We don't need to set a projection since we are only getting one row.
@@ -112,6 +156,5 @@ public class CourseView extends AppCompatActivity
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // Clear out the text views, just in case
     }
 }

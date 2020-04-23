@@ -34,4 +34,7 @@
     <!-- empty TextView text -->
     <string name="empty_term_text">Click the button to add a term</string>
 
+    <!-- Delete Term menu String -->
+    <string name="delete_current_term">Delete Term</string>
+
 </resources>
