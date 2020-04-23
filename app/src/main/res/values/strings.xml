@@ -23,8 +23,7 @@
     <string name="term_start_date">Term Start Date</string>
     <string name="term_end_date">Term End Date</string>
     <string name="term_name_hint">Term 1</string>
-    <string name="term_start_date_hint">05/01/2020</string>
-    <string name="term_end_date_hint">11/01/2020</string>
+    <string name="term_date_hint">MM/DD/YYYY</string>
     <string name="term_save_button">Save</string>
 
     <!-- list_item TextView Strings -->

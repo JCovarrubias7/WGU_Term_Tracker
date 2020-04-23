@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:ems="10"
-            android:hint="@string/term_start_date_hint"
+            android:hint="@string/term_date_hint"
             android:inputType="date" />
 
         <EditText
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:ems="10"
-            android:hint="@string/term_end_date_hint"
+            android:hint="@string/term_date_hint"
             android:inputType="date" />
 
         <Button
