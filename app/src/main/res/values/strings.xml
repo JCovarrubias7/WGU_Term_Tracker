@@ -33,7 +33,8 @@
     <!-- empty TextView text -->
     <string name="empty_term_text">Click the button to add a term</string>
 
-    <!-- Delete Term menu String -->
+    <!-- Menu_all_courses Strings -->
     <string name="delete_current_term">Delete Term</string>
+    <string name="edit_current_term">Edit Term</string>
 
 </resources>

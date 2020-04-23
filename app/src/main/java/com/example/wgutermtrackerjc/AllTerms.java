@@ -67,8 +67,8 @@ public class AllTerms extends AppCompatActivity
         termListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                // Create new intent to go to CourseView
-                Intent intent = new Intent(AllTerms.this, CourseView.class);
+                // Create new intent to go to TermView
+                Intent intent = new Intent(AllTerms.this, TermView.class);
                 // Form the content URI that represents the term that was clicked on
                 Uri currentTermUri = ContentUris.withAppendedId(TermEntry.CONTENT_URI, id);
                 // Set the URI on the data fields of the Intent

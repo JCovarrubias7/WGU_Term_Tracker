@@ -19,13 +19,13 @@
             android:label="@string/title_activity_assessment_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CourseView"
-            android:label="@string/title_activity_course_view"
+            android:name=".TermView"
+            android:label="@string/title_activity_term_view"
             android:parentActivityName=".AllTerms"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TermView"
-            android:label="@string/title_activity_term_view"
+            android:name=".CourseView"
+            android:label="@string/title_activity_course_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AllTerms"
