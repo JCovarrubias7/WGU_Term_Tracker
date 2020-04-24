@@ -59,7 +59,7 @@ public class AllTerms extends AppCompatActivity
         View emptyView = findViewById(R.id.empty_term_view);
         termListView.setEmptyView(emptyView);
 
-        // Setup an Adapter to create a list item for each rof of term data in the cursor
+        // Setup an Adapter to create a list item for each row of term data in the cursor
         mCursorAdapter = new TermCursorAdapter(this, null);
         termListView.setAdapter(mCursorAdapter);
 

@@ -1,7 +1,9 @@
 package com.example.wgutermtrackerjc;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -94,14 +96,52 @@ public class TermView extends AppCompatActivity
         switch (item.getItemId()) {
             // Respond to a click on the "Insert test data" menu option
             case R.id.action_delete_current_term:
-                deleteTerm();
+                showDeleteConfirmationDialog();
                 return true;
             case R.id.action_edit_current_term:
+                // Get the intent that launched this activity
+                Intent intent = getIntent();
+                // for the content URI that was sent from the AllTerms
+                mCurrentTermUri = intent.getData();
+                // Create new intent to go to the AddTerm activity
+                Intent newIntent = new Intent(TermView.this, AddTerm.class);
+                // Set the URI on the data files of the Intent
+                newIntent.setData(mCurrentTermUri);
+                // Launch the activity to edit the data for the current term
+                startActivity(newIntent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    // Create the delete confirmation dialog message when deleting a term
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Delete this term?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the product.
+                deleteTerm();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the product.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    // Perform the deletion of the term in the database
     private void deleteTerm() {
         // Only perform the delete if there is an existing term
         if (mCurrentTermUri != null) {
