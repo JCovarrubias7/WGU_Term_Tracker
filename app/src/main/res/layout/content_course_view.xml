@@ -1,66 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/courses_term_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/term_name"
-        android:textAppearance="?android:textAppearanceLarge" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/courses_list_term_start"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="@string/list_item_start_date"
-            android:textAppearance="?android:textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/courses_list_term_start_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textAppearance="?android:textAppearanceMedium" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/courses_list_term_end"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="@string/list_item_end_date"
-            android:textAppearance="?android:textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/courses_list_term_end_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textAppearance="?android:textAppearanceMedium" />
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/term_courses_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
