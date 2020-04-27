@@ -11,7 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.wgutermtrackerjc.data.TermContract.TermEntry;
+import com.example.wgutermtrackerjc.data.DBContract.TermEntry;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -128,24 +128,16 @@ public class AddTerm extends AppCompatActivity
         if (mCurrentTermUri == null) {
             // Insert a new row into the database and return the ID of the new row
             //long newRowId = db.insert(TermEntry.TABLE_NAME, null, values);
-            Uri newUri = getContentResolver().insert(TermEntry.CONTENT_URI, values);
+            Uri newUri = getContentResolver().insert(TermEntry.CONTENT_URI_TERMS, values);
         }
         else {
             // if not null, then it is an existing term and we have to update it
             int rowsAffected = getContentResolver().update(mCurrentTermUri, values, null, null);
-            // Show toast message depending on whether or not the update was successful
-            if (rowsAffected == 0) {
-                // IF no rows were affected, then there was an error with the update.
-                Toast.makeText(this, "Error updating term",
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, "Term Updated",
-                        Toast.LENGTH_SHORT).show();
-            }
         }
         // Exit activity
-        finish();
+        // Create new intent to go to TermView
+        Intent intent = new Intent(AddTerm.this, AllTerms.class);
+        startActivity(intent);
     }
 
     @Override
@@ -205,7 +197,7 @@ public class AddTerm extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor.moveToFirst()) {
-            //Find the index of each term colum we are interested in
+            //Find the index of each term column we are interested in
             int nameColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_NAME);
             int startColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_START_DATE);
             int endColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_END_DATE);
