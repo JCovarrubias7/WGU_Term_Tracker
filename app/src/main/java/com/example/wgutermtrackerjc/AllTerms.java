@@ -7,7 +7,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.wgutermtrackerjc.data.TermContract.TermEntry;
+import com.example.wgutermtrackerjc.data.DBContract;
+import com.example.wgutermtrackerjc.data.DBContract.TermEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AllTerms extends AppCompatActivity
@@ -70,9 +72,24 @@ public class AllTerms extends AppCompatActivity
                 // Create new intent to go to TermView
                 Intent intent = new Intent(AllTerms.this, TermView.class);
                 // Form the content URI that represents the term that was clicked on
-                Uri currentTermUri = ContentUris.withAppendedId(TermEntry.CONTENT_URI, id);
+                Uri currentTermUri = ContentUris.withAppendedId(TermEntry.CONTENT_URI_TERMS, id);
                 // Set the URI on the data fields of the Intent
                 intent.setData(currentTermUri);
+
+                // Get the TextViews that have the values we want
+                TextView nameView = (TextView) view.findViewById(R.id.list_item_name);
+                TextView startView = (TextView) view.findViewById(R.id.list_item_start_date);
+                TextView endView = (TextView) view.findViewById(R.id.list_item_end_date);
+
+                // Get the string values of each text view of the list
+                String termName = nameView.getText().toString();
+                String termStart = startView.getText().toString();
+                String termEnd = endView.getText().toString();
+
+                intent.putExtra("termId", id);
+                intent.putExtra("termName", termName);
+                intent.putExtra("termStart", termStart);
+                intent.putExtra("termEnd", termEnd);
 
                 // Launch the activity to display the data for the current Term
                 startActivity(intent);
@@ -94,7 +111,19 @@ public class AllTerms extends AppCompatActivity
 
         // Insert a new row into the database and return the ID of the new row
         //long newRowId = db.insert(TermEntry.TABLE_NAME, null, values);
-        getContentResolver().insert(TermEntry.CONTENT_URI, values);
+        getContentResolver().insert(TermEntry.CONTENT_URI_TERMS, values);
+
+        // Create a ContentValues object where column names are the keys,
+        // and Term attributes are the the values.
+        ContentValues courseValues = new ContentValues();
+        courseValues.put(DBContract.CourseEntry.COLUMN_ASSOCIATED_TERM_ID, 1);
+        courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_NAME, "C195 - Test Class");
+        courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_START, "05/20/2020");
+        courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_END, "06/20/2020");
+        courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_STATUS, "plan to take");
+
+        // Insert a new row into the database and return the ID of the new row
+        getContentResolver().insert(DBContract.CourseEntry.CONTENT_URI_COURSES, courseValues);
     }
 
     @Override
@@ -132,7 +161,7 @@ public class AllTerms extends AppCompatActivity
 
         // This loader wil execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,
-                TermEntry.CONTENT_URI,
+                TermEntry.CONTENT_URI_TERMS,
                 projection,
                 null,
                 null,
@@ -155,8 +184,8 @@ public class AllTerms extends AppCompatActivity
     // Helper method to delete all the terms in the DataBase
     private void deleteAllTerms() {
         // Only perform the delete if there is an item in the terms table
-        if(TermEntry.CONTENT_URI != null) {
-            int rowsDeleted = getContentResolver().delete(TermEntry.CONTENT_URI, null, null);
+        if(TermEntry.CONTENT_URI_TERMS != null) {
+            int rowsDeleted = getContentResolver().delete(TermEntry.CONTENT_URI_TERMS, null, null);
             // Show a toast message depending on condition
             if (rowsDeleted == 0) {
                 // If no rows were deleted, then there was an error with the delete.
