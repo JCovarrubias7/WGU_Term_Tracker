@@ -10,7 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.wgutermtrackerjc.data.TermContract.TermEntry;
+import com.example.wgutermtrackerjc.data.DBContract.CourseEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,17 +21,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TermView extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // Identifier for the term data loader
-    private static final int EXISTING_PRODUCT_LOADER = 0;
+    private static final int EXISTING_TERM_LOADER = 0;
 
     // Content URI for existing term
     private Uri mCurrentTermUri;
+
+    // Adapter in all the call back methods
+    CourseCursorAdapter mCursorAdapter;
+
+    // Hold the term ID that launched this activity
+    long currentTermId;
 
     // EditText field to enter term name
     private TextView mTermNameText;
@@ -54,7 +60,7 @@ public class TermView extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_view);
+        setContentView(R.layout.activity_term_view);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -73,13 +79,32 @@ public class TermView extends AppCompatActivity
         Intent intent = getIntent();
         mCurrentTermUri = intent.getData();
 
-        // Initialize the loader to red the term data from the Database
-        getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
+        currentTermId = intent.getLongExtra("termId", -1);
+        String termName = intent.getStringExtra("termName");
+        String termStart = intent.getStringExtra("termStart");
+        String termEnd = intent.getStringExtra("termEnd");
 
         // Find views that we want to modify in the list item layout
-        mTermNameText = (TextView) findViewById(R.id.courses_term_name);
-        mTermStartDateText = (TextView) findViewById(R.id.courses_list_term_start_date);
-        mTermEndDateText = (TextView) findViewById(R.id.courses_list_term_end_date);
+        mTermNameText = (TextView) findViewById(R.id.term_name);
+        mTermStartDateText = (TextView) findViewById(R.id.term_start_date);
+        mTermEndDateText = (TextView) findViewById(R.id.term_end_date);
+
+        // Set the textView values to the values from the intent
+        mTermNameText.setText(termName);
+        mTermStartDateText.setText(termStart);
+        mTermEndDateText.setText(termEnd);
+
+        // Find the ListView which will be populated with the courses data
+        ListView coursesListView = (ListView) findViewById(R.id.term_courses_list);
+
+        // Setup an Adapter to create a list item for each row of course data in the cursor
+        mCursorAdapter = new CourseCursorAdapter(this, null);
+        coursesListView.setAdapter(mCursorAdapter);
+
+        // Initialize the loader to red the term data from the Database
+        getLoaderManager().initLoader(EXISTING_TERM_LOADER, null, this);
+
+
     }
 
     @Override
@@ -147,17 +172,6 @@ public class TermView extends AppCompatActivity
         if (mCurrentTermUri != null) {
             // Call the ContentResolver to delete the product at the given URI.
             int rowsDeleted = getContentResolver().delete(mCurrentTermUri, null, null);
-            // Show toast depending on whether or not the deletion was successful.
-            if (rowsDeleted == 0) {
-                // If no rows were deleted, then there was an error with the delete.
-                Toast.makeText(this, "Error with deleting the term",
-                        Toast.LENGTH_SHORT).show();
-            }
-            else {
-                // Otherwise, the delete was successful and we can display a toast.
-                Toast.makeText(this, "Term deleted successfully",
-                        Toast.LENGTH_SHORT).show();
-            }
         }
         // Close the activity
         finish();
@@ -166,34 +180,32 @@ public class TermView extends AppCompatActivity
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         // Get the columns from the table using the URI.
-        // We don't need to set a projection since we are only getting one row.
+        // Define a projection that specifies the columns from the table we care about
+        String[] projection = {
+                CourseEntry._ID,
+                CourseEntry.COLUMN_ASSOCIATED_TERM_ID,
+                CourseEntry.COLUMN_COURSE_NAME,
+                CourseEntry.COLUMN_COURSE_START,
+                CourseEntry.COLUMN_COURSE_END,
+                CourseEntry.COLUMN_COURSE_STATUS};
+
+        // Define a selection
+        String selection = CourseEntry.COLUMN_ASSOCIATED_TERM_ID + "=?";
+        String[] selectionArgs = {String.valueOf(currentTermId)};
+
+        // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,
-                mCurrentTermUri,
-                null,
-                null,
-                null,
+                CourseEntry.CONTENT_URI_COURSES,
+                projection,
+                selection,
+                selectionArgs,
                 null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        if (cursor.moveToFirst()) {
-            //Find the index of each term colum we are interested in
-            int nameColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_NAME);
-            int startColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_START_DATE);
-            int endColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_END_DATE);
-
-            // Extract out the values from the Cursor for the given index
-            String name = cursor.getString(nameColumnIndex);
-            String start = cursor.getString(startColumnIndex);
-            String end = cursor.getString(endColumnIndex);
-
-            // Update the TextView's on the screen with the values from the Database
-            mTermNameText.setText(name);
-            mTermStartDateText.setText(start);
-            mTermEndDateText.setText(end);
-
-        }
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Update CourseCursorAdapter with this new cursor containing updated course data
+        mCursorAdapter.swapCursor(data);
     }
 
     @Override
