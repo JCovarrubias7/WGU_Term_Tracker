@@ -26,9 +26,15 @@
     <string name="term_date_hint">MM/DD/YYYY</string>
     <string name="term_save_button">Save</string>
 
-    <!-- list_item TextView Strings -->
+    <!-- list_term_item TextView Strings -->
     <string name="list_item_start_date">Start Date: </string>
     <string name="list_item_end_date">End Date: </string>
+
+    <!-- list_course_item TextView Strings -->
+    <string name="list_course_item_course_name">Course Name</string>
+    <string name="list_course_item_status">Status: </string>
+    <string name="list_course_item_start_date">Start Date: </string>
+    <string name="list_course_item_end_date">End Date: </string>
 
     <!-- empty TextView text -->
     <string name="empty_term_text">Click the button to add a term</string>
@@ -36,5 +42,9 @@
     <!-- Menu_all_courses Strings -->
     <string name="delete_current_term">Delete Term</string>
     <string name="edit_current_term">Edit Term</string>
+
+    <!-- Term View Strings -->
+    <string name="all_courses">All Courses</string>
+    <string name="all_courses_icon_description">Multiple courses icon</string>
 
 </resources>
