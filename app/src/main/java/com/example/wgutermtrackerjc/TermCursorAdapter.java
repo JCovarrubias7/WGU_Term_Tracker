@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.example.wgutermtrackerjc.data.TermContract.TermEntry;
+import com.example.wgutermtrackerjc.data.DBContract.TermEntry;
 
 public class TermCursorAdapter extends CursorAdapter {
 
@@ -20,7 +20,7 @@ public class TermCursorAdapter extends CursorAdapter {
     // Create a new blank list item view
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.list_term_item, parent, false);
     }
 
     // This method binds the term data to the given list item layout
