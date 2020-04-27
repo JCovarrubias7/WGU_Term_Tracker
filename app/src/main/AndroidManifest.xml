@@ -41,7 +41,7 @@
         </activity>
         <provider
             android:authorities="com.example.wgutermtrackerjc"
-            android:name=".data.TermProvider"
+            android:name=".data.DBContentProvider"
             android:exported="false" />
     </application>
 
