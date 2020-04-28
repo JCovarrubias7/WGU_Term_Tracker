@@ -14,21 +14,21 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textViewTermName"
+            android:id="@+id/text_view_term_name"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:gravity="bottom|start"
             android:text="@string/term_name" />
 
         <TextView
-            android:id="@+id/textViewTermStart"
+            android:id="@+id/text_view_term_start"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:gravity="bottom|start"
             android:text="@string/term_start_date" />
 
         <TextView
-            android:id="@+id/textViewTermEnd"
+            android:id="@+id/text_view_term_end"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:gravity="bottom|start"
@@ -45,7 +45,7 @@
         <EditText
             android:id="@+id/edit_term_name"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="54dp"
             android:ems="10"
             android:hint="@string/term_name_hint"
             android:inputType="textPersonName" />
