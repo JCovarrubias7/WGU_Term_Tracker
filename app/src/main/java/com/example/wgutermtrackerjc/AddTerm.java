@@ -166,7 +166,7 @@ public class AddTerm extends AppCompatActivity
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Discard your changes and quite editing?");
+        builder.setMessage("Discard your changes and quit editing?");
         builder.setPositiveButton("Discard", discardButtonClickListener);
         builder.setNegativeButton("Keep Editing", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
