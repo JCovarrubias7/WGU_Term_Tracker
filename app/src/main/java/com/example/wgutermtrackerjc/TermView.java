@@ -2,6 +2,7 @@ package com.example.wgutermtrackerjc;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -70,8 +72,11 @@ public class TermView extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(TermView.this, AddCourse.class);
+
+                // Get Id from term to pass on to the AddCourse activity
+                intent.putExtra("termId", currentTermId);
+                startActivity(intent);
             }
         });
 
@@ -79,6 +84,7 @@ public class TermView extends AppCompatActivity
         Intent intent = getIntent();
         mCurrentTermUri = intent.getData();
 
+        // Get the data that was placed in the intent.putExtra
         currentTermId = intent.getLongExtra("termId", -1);
         String termName = intent.getStringExtra("termName");
         String termStart = intent.getStringExtra("termStart");
@@ -100,6 +106,39 @@ public class TermView extends AppCompatActivity
         // Setup an Adapter to create a list item for each row of course data in the cursor
         mCursorAdapter = new CourseCursorAdapter(this, null);
         coursesListView.setAdapter(mCursorAdapter);
+        
+        coursesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Create new intent to go to CourseView
+                Intent intent = new Intent(TermView.this, CourseView.class);
+                // Form the content URI that represents the course that was clicked on
+                Uri currentCourseUri = ContentUris.withAppendedId(CourseEntry.CONTENT_URI_COURSES, id);
+                // Set the URI on the data fields of the Intent
+                intent.setData(currentCourseUri);
+
+                // Get the TextViews that have the values we want
+                TextView nameView = (TextView) view.findViewById(R.id.list_course_item_name);
+                TextView startView = (TextView) view.findViewById(R.id.list_course_item_start_date);
+                TextView endView = (TextView) view.findViewById(R.id.list_course_item_end_date);
+                TextView statusView = (TextView) view.findViewById(R.id.list_course_item_status_text);
+
+                // Get the string values of each text view of the list
+                String courseName = nameView.getText().toString();
+                String courseStart = startView.getText().toString();
+                String courseEnd = endView.getText().toString();
+                String courseStatus = statusView.getText().toString();
+
+                intent.putExtra("courseId", id);
+                intent.putExtra("courseName", courseName);
+                intent.putExtra("courseStart", courseStart);
+                intent.putExtra("courseEnd", courseEnd);
+                intent.putExtra("courseStatus", courseStatus);
+
+                // Launch the activity to display the data for the current Course
+                startActivity(intent);
+            }
+        });
 
         // Initialize the loader to red the term data from the Database
         getLoaderManager().initLoader(EXISTING_TERM_LOADER, null, this);
