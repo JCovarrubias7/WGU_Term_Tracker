@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".AddCourse"
+            android:label="@string/title_activity_add_course"
+            android:parentActivityName=".AllTerms"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".AddTerm"
             android:label="@string/title_activity_add_term"
             android:parentActivityName=".AllTerms"
@@ -39,9 +44,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="com.example.wgutermtrackerjc"
             android:name=".data.DBContentProvider"
+            android:authorities="com.example.wgutermtrackerjc"
             android:exported="false" />
     </application>
 
