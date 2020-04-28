@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_view_course_name"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:gravity="bottom|start"
+            android:text="@string/course_name" />
+
+        <TextView
+            android:id="@+id/text_view_course_start"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:gravity="bottom|start"
+            android:text="@string/course_start_date" />
+
+        <TextView
+            android:id="@+id/text_view_course_end"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:gravity="bottom|start"
+            android:text="@string/course_end_date" />
+
+        <TextView
+            android:id="@+id/text_view_course_status"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:gravity="bottom|start"
+            android:text="@string/course_status" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edit_course_name"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:ems="10"
+            android:hint="@string/course_name_hint"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/edit_course_start_date"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:ems="10"
+            android:hint="@string/course_date_hint"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/edit_course_end_date"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:ems="10"
+            android:hint="@string/course_date_hint"
+            android:inputType="date" />
+
+        <EditText
+            android:id="@+id/edit_course_status"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:ems="10"
+            android:hint="@string/course_status_hint"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/edit_course_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/course_save_button" />
+    </LinearLayout>
+
+</LinearLayout>
