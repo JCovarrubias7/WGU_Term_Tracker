@@ -10,7 +10,7 @@
     <!-- Activity title strings -->
     <string name="title_activity_all_terms">View All Terms</string>
     <string name="title_activity_term_view">Term View</string>
-    <string name="title_activity_course_view">CourseView</string>
+    <string name="title_activity_course_view">Course View</string>
     <string name="title_activity_assessment_view">Assessment View</string>
     <string name="title_activity_add_term">Add a Term</string>
 
