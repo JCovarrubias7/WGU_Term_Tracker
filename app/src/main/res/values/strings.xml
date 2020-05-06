@@ -25,7 +25,7 @@
     <string name="term_name_hint">Term 1</string>
     <string name="term_date_hint">MM/DD/YYYY</string>
     <string name="term_save_button">Save</string>
-    
+
     <!-- Add Course TextView strings -->
     <string name="course_name">Course Name</string>
     <string name="course_start_date">Course Start Date</string>
@@ -46,8 +46,16 @@
     <string name="list_course_item_start_date">Start Date: </string>
     <string name="list_course_item_end_date">End Date: </string>
 
+    <!-- list_assessment_item TextView Strings -->
+    <string name="list_assessment_item_assessment_name">Assessment Name</string>
+    <string name="list_assessment_item_due_date">Due Date: </string>
+
+    <!-- content_term_details TextView Strings -->
+    <string name="term_details_term_courses_textView">Term Courses</string>
+
     <!-- empty TextView text -->
     <string name="empty_term_text">Click the button to add a term</string>
+    <string name="empty_courses_text">Click the button to add a course</string>
 
     <!-- Menu_all_courses Strings -->
     <string name="delete_current_term">Delete Term</string>
@@ -57,6 +65,7 @@
     <string name="all_courses">All Courses</string>
     <string name="all_courses_icon_description">Multiple courses icon</string>
     <string name="title_activity_add_course">Add a Course</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -65,5 +74,6 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_list_courses">Term Courses</string>
 
 </resources>
