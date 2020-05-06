@@ -10,32 +10,34 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".CoursesList"
+            android:label="@string/title_activity_list_courses"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".AddCourse"
             android:label="@string/title_activity_add_course"
-            android:parentActivityName=".AllTerms"
+            android:parentActivityName=".TermsList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddTerm"
             android:label="@string/title_activity_add_term"
-            android:parentActivityName=".AllTerms"
+            android:parentActivityName=".TermsList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AssessmentView"
+            android:name=".AssessmentDetails"
             android:label="@string/title_activity_assessment_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".TermView"
+            android:name=".TermDetails"
             android:label="@string/title_activity_term_view"
-            android:parentActivityName=".AllTerms"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CourseView"
+            android:name=".CourseDetails"
             android:label="@string/title_activity_course_view"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AllTerms"
+            android:name=".TermsList"
             android:label="@string/title_activity_all_terms"
-            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
