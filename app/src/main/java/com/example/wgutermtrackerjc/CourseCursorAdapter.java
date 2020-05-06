@@ -32,19 +32,19 @@ public class CourseCursorAdapter extends CursorAdapter {
         TextView startTextView = (TextView) view.findViewById(R.id.list_course_item_start_date);
         TextView endTextView = (TextView) view.findViewById(R.id.list_course_item_end_date);
 
-        // Find the columns of term attributes we are interested in
+        // Find the columns of course attributes we are interested in
         int nameColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_NAME);
         int statusColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_STATUS);
         int startColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_START);
         int endColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_END);
 
-        // Read the term attributes from the Cursor for the current term
+        // Read the course attributes from the Cursor for the current term
         String courseName = cursor.getString(nameColumnIndex);
         String courseStatus = cursor.getString(statusColumnIndex);
         String courseStart = cursor.getString(startColumnIndex);
         String courseEnd = cursor.getString(endColumnIndex);
 
-        // Update the TextViews with the attributes for the current term
+        // Update the TextViews with the attributes for the current course
         nameTextView.setText(courseName);
         statusTextView.setText(courseStatus);
         startTextView.setText(courseStart);
