@@ -2,7 +2,6 @@ package com.example.wgutermtrackerjc;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
-import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,9 +10,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.wgutermtrackerjc.data.DBContract.CourseEntry;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.wgutermtrackerjc.data.DBContract.TermEntry;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,11 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class TermView extends AppCompatActivity
+public class TermDetails extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // Identifier for the term data loader
@@ -35,17 +31,14 @@ public class TermView extends AppCompatActivity
     // Content URI for existing term
     private Uri mCurrentTermUri;
 
-    // Adapter in all the call back methods
-    CourseCursorAdapter mCursorAdapter;
+    // Get the All Courses Image Button
+    ImageButton allCoursesImageButton;
 
-    // Hold the term ID that launched this activity
-    long currentTermId;
-
-    // EditText field to enter term name
+    // TextView field that holds the term name
     private TextView mTermNameText;
-    // EditText field to enter the term start date
+    // TextView field that holds the term start date
     private TextView mTermStartDateText;
-    // EditText field to enter the term end date
+    // TextView field that holds the term end date
     private TextView mTermEndDateText;
 
     // Boolean flag that keeps track of whether the term has been edited(true) or not (false)
@@ -62,88 +55,40 @@ public class TermView extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_term_view);
+        setContentView(R.layout.activity_term_details);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(TermView.this, AddCourse.class);
-
-                // Get Id from term to pass on to the AddCourse activity
-                intent.putExtra("termId", currentTermId);
-                startActivity(intent);
-            }
-        });
-
         // Get the intent that launched this activity
         Intent intent = getIntent();
         mCurrentTermUri = intent.getData();
 
-        // Get the data that was placed in the intent.putExtra
-        currentTermId = intent.getLongExtra("termId", -1);
-        String termName = intent.getStringExtra("termName");
-        String termStart = intent.getStringExtra("termStart");
-        String termEnd = intent.getStringExtra("termEnd");
+        // Send information to CourseList activity when button is clicked
+        allCoursesImageButton = findViewById(R.id.all_courses_button);
+        allCoursesImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Get the intent that launched this activity
+                Intent intent = getIntent();
+                mCurrentTermUri = intent.getData();
+                // Create new intent to go to CourseDetails
+                Intent newIntent = new Intent(TermDetails.this, CoursesList.class);
+                // Set the URI on the data files of the Intent
+                newIntent.setData(mCurrentTermUri);
+                // Launch the activity to edit the data for the current term
+                startActivity(newIntent);
+            }
+        });
 
         // Find views that we want to modify in the list item layout
         mTermNameText = (TextView) findViewById(R.id.term_name);
         mTermStartDateText = (TextView) findViewById(R.id.term_start_date);
         mTermEndDateText = (TextView) findViewById(R.id.term_end_date);
 
-        // Set the textView values to the values from the intent
-        mTermNameText.setText(termName);
-        mTermStartDateText.setText(termStart);
-        mTermEndDateText.setText(termEnd);
-
-        // Find the ListView which will be populated with the courses data
-        ListView coursesListView = (ListView) findViewById(R.id.term_courses_list);
-
-        // Setup an Adapter to create a list item for each row of course data in the cursor
-        mCursorAdapter = new CourseCursorAdapter(this, null);
-        coursesListView.setAdapter(mCursorAdapter);
-        
-        coursesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                // Create new intent to go to CourseView
-                Intent intent = new Intent(TermView.this, CourseView.class);
-                // Form the content URI that represents the course that was clicked on
-                Uri currentCourseUri = ContentUris.withAppendedId(CourseEntry.CONTENT_URI_COURSES, id);
-                // Set the URI on the data fields of the Intent
-                intent.setData(currentCourseUri);
-
-                // Get the TextViews that have the values we want
-                TextView nameView = (TextView) view.findViewById(R.id.list_course_item_name);
-                TextView startView = (TextView) view.findViewById(R.id.list_course_item_start_date);
-                TextView endView = (TextView) view.findViewById(R.id.list_course_item_end_date);
-                TextView statusView = (TextView) view.findViewById(R.id.list_course_item_status_text);
-
-                // Get the string values of each text view of the list
-                String courseName = nameView.getText().toString();
-                String courseStart = startView.getText().toString();
-                String courseEnd = endView.getText().toString();
-                String courseStatus = statusView.getText().toString();
-
-                intent.putExtra("courseId", id);
-                intent.putExtra("courseName", courseName);
-                intent.putExtra("courseStart", courseStart);
-                intent.putExtra("courseEnd", courseEnd);
-                intent.putExtra("courseStatus", courseStatus);
-
-                // Launch the activity to display the data for the current Course
-                startActivity(intent);
-            }
-        });
-
         // Initialize the loader to red the term data from the Database
         getLoaderManager().initLoader(EXISTING_TERM_LOADER, null, this);
-
-
     }
 
     @Override
@@ -165,14 +110,17 @@ public class TermView extends AppCompatActivity
             case R.id.action_edit_current_term:
                 // Get the intent that launched this activity
                 Intent intent = getIntent();
-                // for the content URI that was sent from the AllTerms
+                // for the content URI that was sent from the TermsList
                 mCurrentTermUri = intent.getData();
                 // Create new intent to go to the AddTerm activity
-                Intent newIntent = new Intent(TermView.this, AddTerm.class);
+                Intent newIntent = new Intent(TermDetails.this, AddTerm.class);
                 // Set the URI on the data files of the Intent
                 newIntent.setData(mCurrentTermUri);
                 // Launch the activity to edit the data for the current term
                 startActivity(newIntent);
+                return true;
+            case android.R.id.home:
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -218,33 +166,34 @@ public class TermView extends AppCompatActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        // Get the columns from the table using the URI.
-        // Define a projection that specifies the columns from the table we care about
-        String[] projection = {
-                CourseEntry._ID,
-                CourseEntry.COLUMN_ASSOCIATED_TERM_ID,
-                CourseEntry.COLUMN_COURSE_NAME,
-                CourseEntry.COLUMN_COURSE_START,
-                CourseEntry.COLUMN_COURSE_END,
-                CourseEntry.COLUMN_COURSE_STATUS};
-
-        // Define a selection
-        String selection = CourseEntry.COLUMN_ASSOCIATED_TERM_ID + "=?";
-        String[] selectionArgs = {String.valueOf(currentTermId)};
-
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,
-                CourseEntry.CONTENT_URI_COURSES,
-                projection,
-                selection,
-                selectionArgs,
+                mCurrentTermUri,
+                null,
+                null,
+                null,
                 null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         // Update CourseCursorAdapter with this new cursor containing updated course data
-        mCursorAdapter.swapCursor(data);
+        if(cursor.moveToFirst()) {
+            //Find the index of each term column we are interested in
+            int nameColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_NAME);
+            int startColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_START_DATE);
+            int endColumnIndex = cursor.getColumnIndex(TermEntry.COLUMN_TERM_END_DATE);
+
+            // Extract out the values from the Cursor for the given index
+            String name = cursor.getString(nameColumnIndex);
+            String start = cursor.getString(startColumnIndex);
+            String end = cursor.getString(endColumnIndex);
+
+            // Update the TextView's on the screen with the values from the Database
+            mTermNameText.setText(name);
+            mTermStartDateText.setText(start);
+            mTermEndDateText.setText(end);
+        }
     }
 
     @Override
