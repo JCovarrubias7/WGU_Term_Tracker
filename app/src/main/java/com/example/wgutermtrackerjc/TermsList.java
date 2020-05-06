@@ -25,7 +25,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AllTerms extends AppCompatActivity
+public class TermsList extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // Identifies the Loader being used
@@ -38,7 +38,7 @@ public class AllTerms extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_terms);
+        setContentView(R.layout.activity_terms_list);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,7 +49,7 @@ public class AllTerms extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AllTerms.this, AddTerm.class);
+                Intent intent = new Intent(TermsList.this, AddTerm.class);
                 startActivity(intent);
             }
         });
@@ -69,14 +69,14 @@ public class AllTerms extends AppCompatActivity
         termListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                // Create new intent to go to TermView
-                Intent intent = new Intent(AllTerms.this, TermView.class);
+                // Create new intent to go to TermDetails
+                Intent intent = new Intent(TermsList.this, TermDetails.class);
                 // Form the content URI that represents the term that was clicked on
                 Uri currentTermUri = ContentUris.withAppendedId(TermEntry.CONTENT_URI_TERMS, id);
                 // Set the URI on the data fields of the Intent
                 intent.setData(currentTermUri);
 
-                // Get the TextViews that have the values we want
+                /*// Get the TextViews that have the values we want
                 TextView nameView = (TextView) view.findViewById(R.id.list_item_name);
                 TextView startView = (TextView) view.findViewById(R.id.list_item_start_date);
                 TextView endView = (TextView) view.findViewById(R.id.list_item_end_date);
@@ -90,7 +90,7 @@ public class AllTerms extends AppCompatActivity
                 intent.putExtra("termName", termName);
                 intent.putExtra("termStart", termStart);
                 intent.putExtra("termEnd", termEnd);
-
+*/
                 // Launch the activity to display the data for the current Term
                 startActivity(intent);
             }
@@ -145,6 +145,9 @@ public class AllTerms extends AppCompatActivity
             // Respond to a click on the "Delete all entries" menu option
             case R.id.action_delete_all_terms:
                 deleteAllTerms();
+                return true;
+            case android.R.id.home:
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
