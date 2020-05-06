@@ -142,10 +142,6 @@ public class AddCourse extends AppCompatActivity
             // if not null, then it is an existing course and we have to update it
             int rowsAffected = getContentResolver().update(mCurrentCourseUri, values, null, null);
         }
-        // Exit activity
-        // Create new intent to go to CourseView
-        Intent intent = new Intent(AddCourse.this, AllTerms.class);
-        startActivity(intent);
     }
 
     @Override
