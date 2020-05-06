@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         allTermsImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentLoadNewActivity = new Intent(MainActivity.this, AllTerms.class);
+                Intent intentLoadNewActivity = new Intent(MainActivity.this, TermsList.class);
                 startActivity(intentLoadNewActivity);
             }
         });
