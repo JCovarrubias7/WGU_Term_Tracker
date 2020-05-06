@@ -20,7 +20,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class AddTerm extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -134,10 +133,6 @@ public class AddTerm extends AppCompatActivity
             // if not null, then it is an existing term and we have to update it
             int rowsAffected = getContentResolver().update(mCurrentTermUri, values, null, null);
         }
-        // Exit activity
-        // Create new intent to go to TermView
-        Intent intent = new Intent(AddTerm.this, AllTerms.class);
-        startActivity(intent);
     }
 
     @Override
