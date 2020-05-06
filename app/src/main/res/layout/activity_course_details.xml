@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CourseView">
+    tools:context=".CourseDetails">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -28,6 +28,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add" />
 
-    <include layout="@layout/content_course_view" />
+    <include layout="@layout/content_course_details" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
