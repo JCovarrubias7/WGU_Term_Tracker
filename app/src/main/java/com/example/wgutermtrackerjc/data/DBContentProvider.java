@@ -19,6 +19,8 @@ public class DBContentProvider extends ContentProvider {
     public static final int TERM_ID = 1001;
     public static final int COURSES = 2000;
     public static final int COURSE_ID = 2001;
+    public static final int ASSESSMENTS = 3000;
+    public static final int ASSESSMENT_ID = 3001;
 
     // URI object to match a content URI to a corresponding code
     public static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -33,6 +35,9 @@ public class DBContentProvider extends ContentProvider {
         sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_COURSES, COURSES);
         // The content URI of COURSE_ID will mpa to the integer in COURSE_ID(2001) to provide access to one row
         sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_COURSES + "/#", COURSE_ID);
+
+        // The content URI of ASSESSMENTS will map to the integer in ASSESSMENTS(3000) to provide access to the whole table
+        //sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, );
     }
 
     //Database helper object
