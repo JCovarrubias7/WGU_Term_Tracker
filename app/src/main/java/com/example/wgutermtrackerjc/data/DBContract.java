@@ -16,6 +16,7 @@ public final class DBContract {
     // Possible path appended to the base content URI for possible URI's
     public static final String PATH_TERMS = "terms";
     public static final String PATH_COURSES = "courses";
+    public static final String PATH_ASSESSMENTS = "assessments";
 
     public static abstract class TermEntry implements BaseColumns {
         // The content URI to access the terms table data in the provider
@@ -50,5 +51,17 @@ public final class DBContract {
         public static final String COLUMN_COURSE_START = "course_start_date";
         public static final String COLUMN_COURSE_END = "course_end_date";
         public static final String COLUMN_COURSE_STATUS = "course_status";
+    }
+
+    public static abstract class AssessmentEntry implements BaseColumns {
+        // The content URI to access the assessment table data in the provider
+        public static final Uri CONTENT_URI_ASSESSMENTS = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ASSESSMENTS);
+
+        // Table name constants
+        public static final String TABLE_NAME_ASSESSMENTS = "assessments";
+        public static final String _ID = BaseColumns._ID;
+        public static final String COLUMN_ASSOCIATED_COURSE_ID = "associated_course_id";
+        public static final String COLUMN_ASSESSMENT_NAME = "assessment_name";
+        public static final String COLUMN_ASSESSMENT_DUE_DATE = "assessment_due_date";
     }
 }
