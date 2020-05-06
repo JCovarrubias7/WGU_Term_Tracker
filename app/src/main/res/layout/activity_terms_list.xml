@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AllTerms">
+    tools:context=".TermsList">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -28,6 +28,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add" />
 
-    <include layout="@layout/content_all_terms" />
+    <include layout="@layout/content_terms_list" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
