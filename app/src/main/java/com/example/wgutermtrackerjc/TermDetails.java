@@ -40,18 +40,7 @@ public class TermDetails extends AppCompatActivity
     private TextView mTermStartDateText;
     // TextView field that holds the term end date
     private TextView mTermEndDateText;
-
-    // Boolean flag that keeps track of whether the term has been edited(true) or not (false)
-    private boolean mTermHasChanged = false;
-
-    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent event) {
-            mTermHasChanged = true;
-            return false;
-        }
-    };
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
