@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class TermsList extends AppCompatActivity
@@ -75,22 +74,6 @@ public class TermsList extends AppCompatActivity
                 Uri currentTermUri = ContentUris.withAppendedId(TermEntry.CONTENT_URI_TERMS, id);
                 // Set the URI on the data fields of the Intent
                 intent.setData(currentTermUri);
-
-                /*// Get the TextViews that have the values we want
-                TextView nameView = (TextView) view.findViewById(R.id.list_item_name);
-                TextView startView = (TextView) view.findViewById(R.id.list_item_start_date);
-                TextView endView = (TextView) view.findViewById(R.id.list_item_end_date);
-
-                // Get the string values of each text view of the list
-                String termName = nameView.getText().toString();
-                String termStart = startView.getText().toString();
-                String termEnd = endView.getText().toString();
-
-                intent.putExtra("termId", id);
-                intent.putExtra("termName", termName);
-                intent.putExtra("termStart", termStart);
-                intent.putExtra("termEnd", termEnd);
-*/
                 // Launch the activity to display the data for the current Term
                 startActivity(intent);
             }
@@ -172,14 +155,14 @@ public class TermsList extends AppCompatActivity
     }
 
     @Override
-    public void onLoadFinished(android.content.Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Update TermCursorAdapter with this new cursor containing updated term data
         mCursorAdapter.swapCursor(data);
 
     }
 
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    public void onLoaderReset(Loader<Cursor> loader) {
         // Callback called when the data needs to be deleted
         mCursorAdapter.swapCursor(null);
     }
