@@ -83,9 +83,19 @@
             android:textAppearance="?android:textAppearanceMedium" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/course_assessment_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="135dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="@string/course_assignments_textView" />
+
+    <ImageButton
+        android:id="@+id/all_assignments_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/course_assignments_icon_description"
+        app:srcCompat="@drawable/ic_assignment" />
 
 </LinearLayout>
