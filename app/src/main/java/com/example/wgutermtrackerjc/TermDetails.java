@@ -17,7 +17,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -40,7 +39,7 @@ public class TermDetails extends AppCompatActivity
     private TextView mTermStartDateText;
     // TextView field that holds the term end date
     private TextView mTermEndDateText;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +81,8 @@ public class TermDetails extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_terms.xml file
-        getMenuInflater().inflate(R.menu.menu_term_view, menu);
+        // Inflate the menu options from the res/menu/menu_terms_details.xml file
+        getMenuInflater().inflate(R.menu.menu_term_details, menu);
         return true;
     }
 
@@ -136,7 +135,6 @@ public class TermDetails extends AppCompatActivity
                 }
             }
         });
-
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -146,7 +144,7 @@ public class TermDetails extends AppCompatActivity
     private void deleteTerm() {
         // Only perform the delete if there is an existing term
         if (mCurrentTermUri != null) {
-            // Call the ContentResolver to delete the product at the given URI.
+            // Call the ContentResolver to delete the term at the given URI.
             int rowsDeleted = getContentResolver().delete(mCurrentTermUri, null, null);
         }
         // Close the activity
