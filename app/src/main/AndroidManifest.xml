@@ -15,7 +15,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CoursesList"
-            android:label="@string/title_activity_list_courses"
+            android:label="@string/title_activity_term_courses_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddCourse"
@@ -27,15 +27,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AssessmentDetails"
-            android:label="@string/title_activity_assessment_view"
+            android:label="@string/title_activity_assessment_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TermDetails"
-            android:label="@string/title_activity_term_view"
+            android:label="@string/title_activity_term_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CourseDetails"
-            android:label="@string/title_activity_course_view"
+            android:label="@string/title_activity_course_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TermsList"

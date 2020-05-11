@@ -8,11 +8,14 @@
     <string name="all_terms_icon_description">Multiple terms icon</string>
 
     <!-- Activity title strings -->
-    <string name="title_activity_all_terms">View All Terms</string>
-    <string name="title_activity_term_view">Term View</string>
-    <string name="title_activity_course_view">Course View</string>
-    <string name="title_activity_assessment_view">Assessment View</string>
+    <string name="title_activity_all_terms">All Terms List</string>
+    <string name="title_activity_term_details">Term Details</string>
+    <string name="title_activity_term_courses_list">Term Courses List</string>
+    <string name="title_activity_course_details">Course Details</string>
+    <string name="title_activity_assessment_list">Course Assessments List</string>
+    <string name="title_activity_assessment_details">Assessment Details</string>
     <string name="title_activity_add_term">Add a Term</string>
+    <string name="title_activity_add_course">Add a Course</string>
 
     <!-- All Terms Screen Menu strings -->
     <string name="insert_test_data">Insert Test Data</string>
@@ -84,7 +87,6 @@
     <!-- Term View Strings -->
     <string name="all_courses">All Courses</string>
     <string name="all_courses_icon_description">Multiple courses icon</string>
-    <string name="title_activity_add_course">Add a Course</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -94,7 +96,6 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_list_courses">Term Courses</string>
-    <string name="title_activity_assessment_list">Assessments List</string>
+
 
 </resources>
