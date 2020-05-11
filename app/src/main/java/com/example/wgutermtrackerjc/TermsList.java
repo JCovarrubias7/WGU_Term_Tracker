@@ -104,6 +104,9 @@ public class TermsList extends AppCompatActivity
         courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_START, "05/20/2020");
         courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_END, "06/20/2020");
         courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_STATUS, "plan to take");
+        courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_MENTOR_NAME, "James Test");
+        courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_MENTOR_PHONE, "773-123-1234");
+        courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_MENTOR_EMAIL, "JamesT@email.com");
 
         // Insert a new row into the database and return the ID of the new row
         getContentResolver().insert(DBContract.CourseEntry.CONTENT_URI_COURSES, courseValues);
