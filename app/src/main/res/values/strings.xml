@@ -34,9 +34,15 @@
     <string name="course_start_date">Course Start Date</string>
     <string name="course_end_date">Course End Date</string>
     <string name="course_status">Course Status</string>
+    <string name="course_mentor_name">Mentor Name</string>
+    <string name="course_mentor_phone">Mentor Phone</string>
+    <string name="course_mentor_email">Mentor Email</string>
     <string name="course_name_hint">Course 1</string>
     <string name="course_date_hint">MM/DD/YYYY</string>
     <string name="course_status_hint">Plan to Take</string>
+    <string name="course_mentor_name_hint">Angela Smith</string>
+    <string name="course_mentor_phone_hint">123–456–7890</string>
+    <string name="course_mentor_email_hint">angelasmith123@email.com</string>
     <string name="course_save_button">Save</string>
 
     <!-- list_term_item TextView Strings -->
@@ -48,6 +54,9 @@
     <string name="list_course_item_status">Status: </string>
     <string name="list_course_item_start_date">Start Date: </string>
     <string name="list_course_item_end_date">End Date: </string>
+    <string name="list_course_item_mentor_name">Mentor Name: </string>
+    <string name="list_course_item_mentor_phone">Mentor Phone: </string>
+    <string name="list_course_item_mentor_email">Mentor Email: </string>
 
     <!-- list_assessment_item TextView Strings -->
     <string name="list_assessment_item_assessment_name">Assessment Name</string>

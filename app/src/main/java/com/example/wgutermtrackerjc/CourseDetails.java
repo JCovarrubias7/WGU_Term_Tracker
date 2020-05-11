@@ -44,6 +44,13 @@ public class CourseDetails extends AppCompatActivity
     private TextView mCourseStartDateText;
     // TextView field that holds the course end date
     private TextView mCourseEndDateText;
+    // TextView field that hold the course mentor name
+    private TextView mCourseMentorNameText;
+    // TextView field that hold the course mentor phone
+    private TextView mCourseMentorPhoneText;
+    // TextView field that hold the course mentor email
+    private TextView mCourseMentorEmailText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +90,9 @@ public class CourseDetails extends AppCompatActivity
         mCourseStatusText = (TextView) findViewById(R.id.course_item_status_text);
         mCourseStartDateText = (TextView) findViewById(R.id.course_item_start_date);
         mCourseEndDateText = (TextView) findViewById(R.id.course_item_end_date);
+        mCourseMentorNameText = (TextView) findViewById(R.id.course_item_mentor_name);
+        mCourseMentorPhoneText = (TextView) findViewById(R.id.course_item_mentor_phone);
+        mCourseMentorEmailText = (TextView) findViewById(R.id.course_item_mentor_email);
 
         // Initialize the loader to red the term data from the Database
         getLoaderManager().initLoader(EXISTING_COURSE_LOADER, null, this);
@@ -184,18 +194,27 @@ public class CourseDetails extends AppCompatActivity
             int statusColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_STATUS);
             int startColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_START);
             int endColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_END);
+            int mentorNameColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_MENTOR_NAME);
+            int mentorPhoneColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_MENTOR_PHONE);
+            int mentorEmailColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_MENTOR_EMAIL);
 
             // Extract out the values from the Cursor for the given index
             String name = cursor.getString(nameColumnIndex);
             String status = cursor.getString(statusColumnIndex);
             String start  = cursor.getString(startColumnIndex);
             String end = cursor.getString(endColumnIndex);
+            String mentorName = cursor.getString(mentorNameColumnIndex);
+            String mentorPhone = cursor.getString(mentorPhoneColumnIndex);
+            String mentorEmail = cursor.getString(mentorEmailColumnIndex);
 
             // Update the TextView's on the screen with the values from the Database
             mCourseNameText.setText(name);
             mCourseStatusText.setText(status);
             mCourseStartDateText.setText(start);
             mCourseEndDateText.setText(end);
+            mCourseMentorNameText.setText(mentorName);
+            mCourseMentorPhoneText.setText(mentorPhone);
+            mCourseMentorEmailText.setText(mentorEmail);
         }
 
     }

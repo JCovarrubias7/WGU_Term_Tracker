@@ -34,7 +34,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 + CourseEntry.COLUMN_COURSE_NAME + " TEXT NOT NULL, "
                 + CourseEntry.COLUMN_COURSE_START + " TEXT NOT NULL, "
                 + CourseEntry.COLUMN_COURSE_END + " TEXT NOT NULL, "
-                + CourseEntry.COLUMN_COURSE_STATUS + " TEXT NOT NULL);";
+                + CourseEntry.COLUMN_COURSE_STATUS + " TEXT NOT NULL, "
+                + CourseEntry.COLUMN_COURSE_MENTOR_NAME + " TEXT NOT NULL, "
+                + CourseEntry.COLUMN_COURSE_MENTOR_PHONE + " TEXT NOT NULL, "
+                + CourseEntry.COLUMN_COURSE_MENTOR_EMAIL + " TEXT NOT NULL);";
 
         // Execute the SQL Statement
         db.execSQL(SQL_CREATE_TERMS_TABLE);

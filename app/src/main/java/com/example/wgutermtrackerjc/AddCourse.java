@@ -41,6 +41,12 @@ public class AddCourse extends AppCompatActivity
     private EditText mCourseEndDateEditText;
     // EditText field to enter the course status
     private EditText mCourseStatusEditText;
+    // EditText field to enter the course mentor name
+    private EditText mCourseMentorNameEditText;
+    // EditText field to enter the course mentor phone
+    private EditText mCourseMentorPhoneEditText;
+    // EditText field to enter the course mentor email
+    private EditText mCourseMentorEmailEditText;
     // Button to save the Course
     private Button mCourseSaveButton;
 
@@ -91,6 +97,9 @@ public class AddCourse extends AppCompatActivity
         mCourseStartDateEditText = (EditText) findViewById(R.id.edit_course_start_date);
         mCourseEndDateEditText = (EditText) findViewById(R.id.edit_course_end_date);
         mCourseStatusEditText = (EditText) findViewById(R.id.edit_course_status);
+        mCourseMentorNameEditText = (EditText) findViewById(R.id.edit_course_mentor_name);
+        mCourseMentorPhoneEditText = (EditText) findViewById(R.id.edit_course_mentor_phone);
+        mCourseMentorEmailEditText = (EditText) findViewById(R.id.edit_course_mentor_email); 
         mCourseSaveButton = (Button) findViewById(R.id.edit_course_save_button);
 
         // Create onClickListener for save button to call insertTerm
@@ -123,6 +132,18 @@ public class AddCourse extends AppCompatActivity
         if(courseStatusString.isEmpty()) {
             courseStatusString = null;
         }
+        String courseMentorNameString = mCourseMentorNameEditText.getText().toString().trim();
+        if(courseMentorNameString.isEmpty()) {
+            courseMentorNameString = null;
+        }
+        String courseMentorPhoneString = mCourseMentorPhoneEditText.getText().toString().trim();
+        if(courseMentorPhoneString.isEmpty()) {
+            courseMentorPhoneString = null;
+        }
+        String courseMentorEmailString = mCourseMentorEmailEditText.getText().toString().trim();
+        if(courseMentorEmailString.isEmpty()) {
+            courseMentorEmailString = null;
+        }
 
         // Create the ContentValues object where column names are the keys,
         // and the input fields for the course are the values
@@ -132,6 +153,9 @@ public class AddCourse extends AppCompatActivity
         values.put(CourseEntry.COLUMN_COURSE_START, courseStartDateString);
         values.put(CourseEntry.COLUMN_COURSE_END, courseEndDateString);
         values.put(CourseEntry.COLUMN_COURSE_STATUS, courseStatusString);
+        values.put(CourseEntry.COLUMN_COURSE_MENTOR_NAME, courseMentorNameString);
+        values.put(CourseEntry.COLUMN_COURSE_MENTOR_PHONE, courseMentorPhoneString);
+        values.put(CourseEntry.COLUMN_COURSE_MENTOR_EMAIL, courseMentorEmailString);
 
         // Determine if this is new or existing course by checking the mCurrentCourseUri
         // If the URI is empty, it must be a new one
@@ -215,18 +239,27 @@ public class AddCourse extends AppCompatActivity
             int startColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_START);
             int endColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_END);
             int statusColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_STATUS);
+            int mentorNameColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_MENTOR_NAME);
+            int mentorPhoneColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_MENTOR_PHONE);
+            int mentorEmailColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_MENTOR_EMAIL);
 
             // Extract out the values from the Cursor for the given index
             String name = cursor.getString(nameColumnIndex);
             String start = cursor.getString(startColumnIndex);
             String end = cursor.getString(endColumnIndex);
             String status = cursor.getString(statusColumnIndex);
+            String mentorName = cursor.getString(mentorNameColumnIndex);
+            String mentorPhone = cursor.getString(mentorPhoneColumnIndex);
+            String mentorEmail = cursor.getString(mentorEmailColumnIndex);
 
             // Update the TextView's on the screen with the values from the Database
             mCourseNameEditText.setText(name);
             mCourseStartDateEditText.setText(start);
             mCourseEndDateEditText.setText(end);
             mCourseStatusEditText.setText(status);
+            mCourseMentorNameEditText.setText(mentorName);
+            mCourseMentorPhoneEditText.setText(mentorPhone);
+            mCourseMentorEmailEditText.setText(mentorEmail);
         }
     }
 

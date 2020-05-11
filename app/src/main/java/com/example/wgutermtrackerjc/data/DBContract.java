@@ -52,6 +52,9 @@ public final class DBContract {
         public static final String COLUMN_COURSE_START = "course_start_date";
         public static final String COLUMN_COURSE_END = "course_end_date";
         public static final String COLUMN_COURSE_STATUS = "course_status";
+        public static final String COLUMN_COURSE_MENTOR_NAME = "course_mentor_name";
+        public static final String COLUMN_COURSE_MENTOR_PHONE = "course_mentor_phone";
+        public static final String COLUMN_COURSE_MENTOR_EMAIL = "course_mentor_email";
     }
 
     public static abstract class AssessmentEntry implements BaseColumns {
