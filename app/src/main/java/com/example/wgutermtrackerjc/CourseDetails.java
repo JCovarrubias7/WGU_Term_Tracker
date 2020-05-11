@@ -1,21 +1,24 @@
 package com.example.wgutermtrackerjc;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.wgutermtrackerjc.data.DBContract.CourseEntry;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class CourseDetails extends AppCompatActivity
@@ -27,11 +30,11 @@ public class CourseDetails extends AppCompatActivity
     // Content URI for existing course
     private Uri mCurrentCourseUri;
 
-    // Adapter in all the call back methods
-    CourseCursorAdapter mCursorAdapter;
+    // Hold the term ID that launched this activity
+    long currentTermId;
 
-    // Hold the course ID that launched this activity
-    long currentCourseId;
+    // Get the All Assessments Image Button
+    ImageButton allAssessmentImageButton;
 
     // TextView field that holds course name
     private TextView mCourseNameText;
@@ -42,17 +45,6 @@ public class CourseDetails extends AppCompatActivity
     // TextView field that holds the course end date
     private TextView mCourseEndDateText;
 
-    // Boolean flag that keeps track of whether the course has been edited(true) or not (false)
-    private boolean mCourseHasChanged = false;
-
-    private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent event) {
-            mCourseHasChanged = true;
-            return false;
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,25 +54,29 @@ public class CourseDetails extends AppCompatActivity
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         // Get the intent that lunched this activity
         Intent intent = getIntent();
         mCurrentCourseUri = intent.getData();
 
-        // Get the data that was placed in the intent.putExtra
-        currentCourseId = intent.getLongExtra("courseId", -1);
-        String courseName = intent.getStringExtra("courseName");
-        String courseStatus = intent.getStringExtra("courseStatus");
-        String courseStart = intent.getStringExtra("courseStart");
-        String courseEnd = intent.getStringExtra("courseEnd");
+        // Get the term Id
+        currentTermId = intent.getLongExtra("termId", -1);
+
+        // Send information to AssessmentList activity when button is clicked
+        allAssessmentImageButton = findViewById(R.id.all_assignments_button);
+        allAssessmentImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Get the intent that launched this activity
+                Intent intent = getIntent();
+                mCurrentCourseUri = intent.getData();
+                // Create new intent to go to CourseDetails
+                Intent newIntent = new Intent(CourseDetails.this, AssessmentList.class);
+                // Set the URI on the data files of the Intent
+                newIntent.setData(mCurrentCourseUri);
+                // Launch the activity to edit the data for the current term
+                startActivity(newIntent);
+            }
+        });
 
         // Find views that we want to set the values from the intent
         mCourseNameText = (TextView) findViewById(R.id.course_name);
@@ -88,29 +84,119 @@ public class CourseDetails extends AppCompatActivity
         mCourseStartDateText = (TextView) findViewById(R.id.course_item_start_date);
         mCourseEndDateText = (TextView) findViewById(R.id.course_item_end_date);
 
-        // Set the TextView's values to the values from the intent
-        mCourseNameText.setText(courseName);
-        mCourseStatusText.setText(courseStatus);
-        mCourseStartDateText.setText(courseStart);
-        mCourseEndDateText.setText(courseEnd);
+        // Initialize the loader to red the term data from the Database
+        getLoaderManager().initLoader(EXISTING_COURSE_LOADER, null, this);
+    }
 
-        // Find the ListView which will be populated with the assessments data
-        ListView assessmentListView = (ListView) findViewById(R.id.course_assessment_list);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu options from the res/menu/menu_course_details.xml file
+        getMenuInflater().inflate(R.menu.menu_course_details, menu);
+        return true;
+    }
 
-        // Setup an Adapter to create a list item for each row of assessment data in the cursor
+    // Declare what to do with the items in the menu when clicked
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            // Respond to a click on the "Insert test data" menu option
+            case R.id.action_delete_current_course:
+                showDeleteConfirmationDialog();
+                return true;
+            case R.id.action_edit_current_course:
+                // Get the intent that launched this activity
+                Intent intent = getIntent();
+                // for the content URI that was sent from the CoursesList
+                mCurrentCourseUri = intent.getData();
+                // Create new intent to go to the AddCourse activity
+                Intent newIntent = new Intent(CourseDetails.this, AddCourse.class);
+                // Set the URI on the data files of the Intent
+                newIntent.setData(mCurrentCourseUri);
+                // Get the term Id
+                currentTermId = intent.getLongExtra("termId", -1);
+                // Get Id from term to pass on to the AddCourse activity
+                newIntent.putExtra("termId", currentTermId);
+                // Launch the activity to edit the data for the current Course
+                startActivity(newIntent);
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    // Create the delete confirmation dialog message when deleting a term
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Delete this course?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the product.
+                deleteCourse();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the product.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
-
-
+    // Perform the deletion of the term in the database
+    private void deleteCourse() {
+        // Only perform the delete if there is an existing course
+        if (mCurrentCourseUri != null) {
+            // Call the ContentResolver to delete the course at the given URI.
+            int rowsDeleted = getContentResolver().delete(mCurrentCourseUri, null, null);
+        }
+        // Close the activity
+        finish();
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return null;
+        // This loader will execute the ContentProvider's query method on a background thread
+        return new CursorLoader(this,
+                mCurrentCourseUri,
+                null,
+                null,
+                null,
+                null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        // Update CourseCursorAdapter with this new cursor containing updated course data
+        if(cursor.moveToFirst()) {
+            // Find the index of each course column we are interested in
+            int nameColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_NAME);
+            int statusColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_STATUS);
+            int startColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_START);
+            int endColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_END);
+
+            // Extract out the values from the Cursor for the given index
+            String name = cursor.getString(nameColumnIndex);
+            String status = cursor.getString(statusColumnIndex);
+            String start  = cursor.getString(startColumnIndex);
+            String end = cursor.getString(endColumnIndex);
+
+            // Update the TextView's on the screen with the values from the Database
+            mCourseNameText.setText(name);
+            mCourseStatusText.setText(status);
+            mCourseStartDateText.setText(start);
+            mCourseEndDateText.setText(end);
+        }
 
     }
 
