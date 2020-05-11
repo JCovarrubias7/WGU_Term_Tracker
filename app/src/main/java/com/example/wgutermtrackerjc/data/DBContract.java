@@ -37,6 +37,7 @@ public final class DBContract {
         public static final String COLUMN_TERM_NAME = "term_name";
         public static final String COLUMN_TERM_START_DATE = "term_start_date";
         public static final String COLUMN_TERM_END_DATE = "term_end_date";
+        public static final String COLUMN_TERM_ACTIVE = "active";
     }
 
     public static abstract class CourseEntry implements BaseColumns {
