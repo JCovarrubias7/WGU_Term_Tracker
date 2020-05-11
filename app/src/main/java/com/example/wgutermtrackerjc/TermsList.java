@@ -64,7 +64,7 @@ public class TermsList extends AppCompatActivity
         mCursorAdapter = new TermCursorAdapter(this, null);
         termListView.setAdapter(mCursorAdapter);
 
-        // Setup the item click listener
+        // Setup the item click listener on the list items
         termListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -111,8 +111,8 @@ public class TermsList extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_terms.xml file
-        getMenuInflater().inflate(R.menu.menu_terms, menu);
+        // Inflate the menu options from the res/menu/menu_terms_list.xml file
+        getMenuInflater().inflate(R.menu.menu_terms_list, menu);
         return true;
     }
 
