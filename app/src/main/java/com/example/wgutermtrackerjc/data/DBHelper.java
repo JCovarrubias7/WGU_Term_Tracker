@@ -25,7 +25,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + TermEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + TermEntry.COLUMN_TERM_NAME + " TEXT NOT NULL, "
                 + TermEntry.COLUMN_TERM_START_DATE + " TEXT NOT NULL, "
-                + TermEntry.COLUMN_TERM_END_DATE + " TEXT NOT NULL);";
+                + TermEntry.COLUMN_TERM_END_DATE + " TEXT NOT NULL, "
+                + TermEntry.COLUMN_TERM_ACTIVE + " INTEGER NOT NULL DEFAULT 0);";
 
         String SQL_CREATE_COURSES_TABLE = "CREATE TABLE " + CourseEntry.TABLE_NAME_COURSES + " ("
                 + CourseEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
