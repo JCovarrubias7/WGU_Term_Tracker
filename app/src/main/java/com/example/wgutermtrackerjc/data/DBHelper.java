@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.wgutermtrackerjc.data.DBContract.TermEntry;
 import com.example.wgutermtrackerjc.data.DBContract.CourseEntry;
+import com.example.wgutermtrackerjc.data.DBContract.AssessmentEntry;
 
 public class DBHelper extends SQLiteOpenHelper {
 
@@ -39,9 +40,17 @@ public class DBHelper extends SQLiteOpenHelper {
                 + CourseEntry.COLUMN_COURSE_MENTOR_PHONE + " TEXT NOT NULL, "
                 + CourseEntry.COLUMN_COURSE_MENTOR_EMAIL + " TEXT NOT NULL);";
 
+        String SQL_CREATE_ASSESSMENT_TABLE = "CREATE TABLE " + AssessmentEntry.TABLE_NAME_ASSESSMENTS + " ("
+                + AssessmentEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + AssessmentEntry.COLUMN_ASSOCIATED_COURSE_ID + " INTEGER NOT NULL, "
+                + AssessmentEntry.COLUMN_ASSESSMENT_NAME + " TEXT NOT NULL, "
+                + AssessmentEntry.COLUMN_ASSESSMENT_DUE_DATE + " TEXT NOT NULL, "
+                + AssessmentEntry.COLUMN_ASSESSMENT_DESCRIPTION + " TEXT NOT NULL);";
+
         // Execute the SQL Statement
         db.execSQL(SQL_CREATE_TERMS_TABLE);
         db.execSQL(SQL_CREATE_COURSES_TABLE);
+        db.execSQL(SQL_CREATE_ASSESSMENT_TABLE);
     }
 
     //Upgrade is called when the database needs to be upgraded

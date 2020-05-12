@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.wgutermtrackerjc.data.DBContract.TermEntry;
 import com.example.wgutermtrackerjc.data.DBContract.CourseEntry;
+import com.example.wgutermtrackerjc.data.DBContract.AssessmentEntry;
 
 public class DBContentProvider extends ContentProvider {
 
@@ -33,11 +34,13 @@ public class DBContentProvider extends ContentProvider {
 
         // The content URI of COURSES will map to the integer in COURSES(2000) to provide access to the whole table
         sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_COURSES, COURSES);
-        // The content URI of COURSE_ID will mpa to the integer in COURSE_ID(2001) to provide access to one row
+        // The content URI of COURSE_ID will map to the integer in COURSE_ID(2001) to provide access to one row
         sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_COURSES + "/#", COURSE_ID);
 
         // The content URI of ASSESSMENTS will map to the integer in ASSESSMENTS(3000) to provide access to the whole table
-        //sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, );
+        sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_ASSESSMENTS, ASSESSMENTS);
+        // The content URI of ASSESSMENT_ID will map to the integer in ASSESSMENT_ID(3001) to provide access to one row
+        sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_ASSESSMENTS + "/#", ASSESSMENT_ID);
     }
 
     //Database helper object
@@ -82,6 +85,16 @@ public class DBContentProvider extends ContentProvider {
                 cursor = database.query(CourseEntry.TABLE_NAME_COURSES, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
+            case ASSESSMENTS:
+                cursor = database.query(AssessmentEntry.TABLE_NAME_ASSESSMENTS, projection, selection, selectionArgs,
+                        null, null, sortOrder);
+                break;
+            case ASSESSMENT_ID:
+                selection = AssessmentEntry._ID + "=?";
+                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
+                cursor = database.query(AssessmentEntry.TABLE_NAME_ASSESSMENTS, projection, selection, selectionArgs,
+                        null, null, sortOrder);
+                break;
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI" + uri);
         }
@@ -99,6 +112,8 @@ public class DBContentProvider extends ContentProvider {
                 return insertTerm(uri, contentValues);
             case COURSES:
                 return insertCourse(uri, contentValues);
+            case ASSESSMENTS:
+                return insertAssessment(uri, contentValues);
             default:
                 throw new IllegalArgumentException("Insertion is not support for" + uri);
         }
@@ -128,7 +143,7 @@ public class DBContentProvider extends ContentProvider {
     private Uri insertCourse(Uri uri, ContentValues values) {
         // Get Writeable database
         SQLiteDatabase database = mDBHelper.getWritableDatabase();
-        // Insert the new term with the given values
+        // Insert the new course with the given values
         long id = database.insert(CourseEntry.TABLE_NAME_COURSES, null, values);
         // Show a toast message whether or not the insertion was successful
         if (id == -1) {
@@ -139,7 +154,28 @@ public class DBContentProvider extends ContentProvider {
             Toast.makeText(getContext(), "Course saved with row id: " + id, Toast.LENGTH_SHORT).show();
         }
 
-        // Notify all listeners that the data has changed for the term content URI
+        // Notify all listeners that the data has changed for the course content URI
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        // Once we know the ID of the new row, return a new URI with the ID appended to the end of it
+        return ContentUris.withAppendedId(uri, id);
+    }
+
+    private Uri insertAssessment(Uri uri, ContentValues values) {
+        // Get Writable database
+        SQLiteDatabase database = mDBHelper.getWritableDatabase();
+        // Insert the new assessment with the given values
+        long id = database.insert(AssessmentEntry.TABLE_NAME_ASSESSMENTS, null, values);
+        // Show a toast message whether or not the insertion was successful
+        if (id == -1) {
+            Toast.makeText(getContext(), "Error saving the assessment", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        else {
+            Toast.makeText(getContext(), "Assessment saved with row id: " + id, Toast.LENGTH_SHORT).show();
+        }
+
+        // Notify all listeners that the data has changed for the assessment content URI
         getContext().getContentResolver().notifyChange(uri, null);
 
         // Once we know the ID of the new row, return a new URI with the ID appended to the end of it
@@ -162,6 +198,12 @@ public class DBContentProvider extends ContentProvider {
                 selection = CourseEntry._ID + "=?";
                 selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
                 return updateCourse(uri, contentValues, selection, selectionArgs);
+            case ASSESSMENTS:
+                return updateAssessment(uri, contentValues, selection, selectionArgs);
+            case ASSESSMENT_ID:
+                selection = AssessmentEntry._ID + "=?";
+                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
+                return updateAssessment(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not support for" + uri);
         }
@@ -193,7 +235,7 @@ public class DBContentProvider extends ContentProvider {
     }
 
     private int updateCourse(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        // No need to update the term if there are no values to update
+        // No need to update the course if there are no values to update
         if (values.size() == 0) {
             return 0;
         }
@@ -209,6 +251,31 @@ public class DBContentProvider extends ContentProvider {
         }
         else {
             Toast.makeText(getContext(), "Course updated", Toast.LENGTH_SHORT).show();
+        }
+        // If 1 or more rows were updated, notify all listeners about the change
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
+    }
+
+    private int updateAssessment(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        // No need to update the assessment if there are no values to update
+        if (values.size() == 0) {
+            return 0;
+        }
+        // Otherwise, get the writeable database to update the data
+        SQLiteDatabase database = mDBHelper.getWritableDatabase();
+
+        // Perform the update on the database and get the number of rows affected
+        int rowsUpdated = database.update(AssessmentEntry.TABLE_NAME_ASSESSMENTS, values, selection, selectionArgs);
+        // Show a toast message whether or not the update was successful
+        if (rowsUpdated == 0) {
+            Toast.makeText(getContext(), "Error saving the assessment", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
+        else {
+            Toast.makeText(getContext(), "Assessment updated", Toast.LENGTH_SHORT).show();
         }
         // If 1 or more rows were updated, notify all listeners about the change
         if (rowsUpdated != 0) {
@@ -247,6 +314,15 @@ public class DBContentProvider extends ContentProvider {
                 selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
                 rowsDeleted = database.delete(CourseEntry.TABLE_NAME_COURSES, selection, selectionArgs);
                 break;
+            case ASSESSMENTS:
+                // Delete all rows that match the selection and selection args
+                rowsDeleted = database.delete(AssessmentEntry.TABLE_NAME_ASSESSMENTS, selection, selectionArgs);
+                break;
+            case ASSESSMENT_ID:
+                // Delete a single row give by the ID in the URI
+                selection = AssessmentEntry._ID + "=?";
+                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
+                rowsDeleted = database.delete(AssessmentEntry.TABLE_NAME_ASSESSMENTS, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }

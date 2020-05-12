@@ -67,5 +67,6 @@ public final class DBContract {
         public static final String COLUMN_ASSOCIATED_COURSE_ID = "associated_course_id";
         public static final String COLUMN_ASSESSMENT_NAME = "assessment_name";
         public static final String COLUMN_ASSESSMENT_DUE_DATE = "assessment_due_date";
+        public static final String COLUMN_ASSESSMENT_DESCRIPTION = "assessment_description";
     }
 }
