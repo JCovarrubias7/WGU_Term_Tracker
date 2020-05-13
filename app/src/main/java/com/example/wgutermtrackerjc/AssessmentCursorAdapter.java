@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.example.wgutermtrackerjc.data.DBContract.AssessmentEntry;
+
 public class AssessmentCursorAdapter extends CursorAdapter {
 
     // Constructor
@@ -22,9 +24,18 @@ public class AssessmentCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         // Find views that we want to modify in the list item layout
         TextView nameTextView = (TextView) view.findViewById(R.id.list_assessment_item_name);
-        TextView dueDateTextView = (TextView) view.findViewById(R.id.list_assessment_item_due_date_textview);
+        TextView dueDateTextView = (TextView) view.findViewById(R.id.list_assessment_item_due_date);
 
         // Find the columns of assessment attributes we are interested in
+        int nameColumnIndex = cursor.getColumnIndex(AssessmentEntry.COLUMN_ASSESSMENT_NAME);
+        int dueDateColumnIndex = cursor.getColumnIndex(AssessmentEntry.COLUMN_ASSESSMENT_DUE_DATE);
 
+        // Read the assessment attributes from the Cursor for the current assessment
+        String assessmentName = cursor.getString(nameColumnIndex);
+        String assessmentDueDate = cursor.getString(dueDateColumnIndex);
+
+        // Update the TextViews with the attributes for the current assessment
+        nameTextView.setText(assessmentName);
+        dueDateTextView.setText(assessmentDueDate);
     }
 }
