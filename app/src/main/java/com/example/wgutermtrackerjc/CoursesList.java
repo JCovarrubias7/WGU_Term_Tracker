@@ -93,13 +93,13 @@ public class CoursesList extends AppCompatActivity
             }
         });
 
-        // Initialize the loader to red the term data from the Database
+        // Initialize the loader to read the term data from the Database
         getLoaderManager().initLoader(EXISTING_TERM_LOADER, null, this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_terms_list.xml file
+        // Inflate the menu options from the res/menu/menu_courses_list.xml file
         getMenuInflater().inflate(R.menu.menu_courses_list, menu);
         return true;
     }
@@ -120,7 +120,7 @@ public class CoursesList extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    // Create the delete confirmation dialog message when deleting a term
+    // Create the delete confirmation dialog message when deleting a course
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
@@ -147,11 +147,11 @@ public class CoursesList extends AppCompatActivity
         alertDialog.show();
     }
 
-    // Perform the deletion of the term in the database
+    // Perform the deletion of the courses in the database
     private void deleteCourses() {
-        // Only perform the delete if there is an existing term
+        // Only perform the delete if there is an existing course
         if (CourseEntry.CONTENT_URI_COURSES != null) {
-            // Call the ContentResolver to delete the product at the given URI.
+            // Call the ContentResolver to delete the course at the given URI.
             int rowsDeleted = getContentResolver().delete(CourseEntry.CONTENT_URI_COURSES, null, null);
             // Show a toast message depending on condition
             if (rowsDeleted == 0) {
