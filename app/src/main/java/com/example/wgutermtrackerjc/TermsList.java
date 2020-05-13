@@ -97,7 +97,7 @@ public class TermsList extends AppCompatActivity
         getContentResolver().insert(TermEntry.CONTENT_URI_TERMS, values);
 
         // Create a ContentValues object where column names are the keys,
-        // and Term attributes are the the values.
+        // and Course attributes are the the values.
         ContentValues courseValues = new ContentValues();
         courseValues.put(DBContract.CourseEntry.COLUMN_ASSOCIATED_TERM_ID, 1);
         courseValues.put(DBContract.CourseEntry.COLUMN_COURSE_NAME, "C195 - Test Class");
@@ -110,6 +110,18 @@ public class TermsList extends AppCompatActivity
 
         // Insert a new row into the database and return the ID of the new row
         getContentResolver().insert(DBContract.CourseEntry.CONTENT_URI_COURSES, courseValues);
+
+        // Create a ContentValues object where column names are the keys,
+        // and assessment attributes are the the values.
+        ContentValues assessmentValues = new ContentValues();
+        assessmentValues.put(DBContract.AssessmentEntry.COLUMN_ASSOCIATED_COURSE_ID, 1);
+        assessmentValues.put(DBContract.AssessmentEntry.COLUMN_ASSESSMENT_NAME, "OA - TRYK02");
+        assessmentValues.put(DBContract.AssessmentEntry.COLUMN_ASSESSMENT_DUE_DATE, "06/05/2020");
+        assessmentValues.put(DBContract.AssessmentEntry.COLUMN_ASSESSMENT_DESCRIPTION, "Make sure you create" +
+                "an document to show the proctor what you are doing");
+
+        // Insert a new row into the database and return the ID of the new row
+        getContentResolver().insert(DBContract.AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues);
     }
 
     @Override
