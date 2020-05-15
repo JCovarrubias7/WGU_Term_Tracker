@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".AddAssessment"
+            android:label="@string/title_activity_add_assessment"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".AssessmentList"
             android:label="@string/title_activity_assessment_list"
             android:theme="@style/AppTheme.NoActionBar" />
