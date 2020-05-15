@@ -51,6 +51,15 @@
     <string name="course_mentor_email_hint">angelasmith123@email.com</string>
     <string name="course_save_button">Save</string>
 
+    <!-- Add Assessment TextView Strings -->
+    <string name="assessment_name">Assessment Name:</string>
+    <string name="assessment_due_date">Assessment Due Date:</string>
+    <string name="assessment_description">Assessment Description</string>
+    <string name="assessment_name_hint">Objective assessment 1</string>
+    <string name="assessment_due_date_hint">07/07/2020</string>
+    <string name="assessment_description_hint">Create an application that will ...</string>
+    <string name="assessment_save_button">Save</string>
+
     <!-- list_term_item TextView Strings -->
     <string name="list_item_start_date">Start Date: </string>
     <string name="list_item_end_date">End Date: </string>
@@ -67,6 +76,7 @@
     <!-- list_assessment_item TextView Strings -->
     <string name="list_assessment_item_assessment_name">Assessment Name</string>
     <string name="list_assessment_item_due_date">Due Date: </string>
+    <string name="list_assessment_item_description">Assessment Description:</string>
 
     <!-- content_term_details TextView Strings -->
     <string name="term_details_term_courses_textView">Term Courses</string>
@@ -104,6 +114,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_add_assessment">Add an Assessment</string>
 
 
 </resources>
