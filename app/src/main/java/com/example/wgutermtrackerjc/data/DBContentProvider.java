@@ -323,6 +323,7 @@ public class DBContentProvider extends ContentProvider {
                 selection = AssessmentEntry._ID + "=?";
                 selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
                 rowsDeleted = database.delete(AssessmentEntry.TABLE_NAME_ASSESSMENTS, selection, selectionArgs);
+                break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }
