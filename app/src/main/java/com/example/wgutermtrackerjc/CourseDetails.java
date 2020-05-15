@@ -61,7 +61,7 @@ public class CourseDetails extends AppCompatActivity
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Get the intent that lunched this activity
+        // Get the intent that launched this activity
         Intent intent = getIntent();
         mCurrentCourseUri = intent.getData();
 
@@ -80,7 +80,7 @@ public class CourseDetails extends AppCompatActivity
                 Intent newIntent = new Intent(CourseDetails.this, AssessmentList.class);
                 // Set the URI on the data files of the Intent
                 newIntent.setData(mCurrentCourseUri);
-                // Launch the activity to edit the data for the current term
+                // Launch the activity to view the assessments list
                 startActivity(newIntent);
             }
         });
@@ -94,7 +94,7 @@ public class CourseDetails extends AppCompatActivity
         mCourseMentorPhoneText = (TextView) findViewById(R.id.course_item_mentor_phone);
         mCourseMentorEmailText = (TextView) findViewById(R.id.course_item_mentor_email);
 
-        // Initialize the loader to red the term data from the Database
+        // Initialize the loader to read the course data from the Database
         getLoaderManager().initLoader(EXISTING_COURSE_LOADER, null, this);
     }
 
@@ -110,7 +110,7 @@ public class CourseDetails extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
-            // Respond to a click on the "Insert test data" menu option
+            // Respond to a click on the "Delete Course" menu option
             case R.id.action_delete_current_course:
                 showDeleteConfirmationDialog();
                 return true;
@@ -137,7 +137,7 @@ public class CourseDetails extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    // Create the delete confirmation dialog message when deleting a term
+    // Create the delete confirmation dialog message when deleting a course
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
@@ -163,7 +163,7 @@ public class CourseDetails extends AppCompatActivity
         alertDialog.show();
     }
 
-    // Perform the deletion of the term in the database
+    // Perform the deletion of the course in the database
     private void deleteCourse() {
         // Only perform the delete if there is an existing course
         if (mCurrentCourseUri != null) {
