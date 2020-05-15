@@ -50,13 +50,13 @@ public class AddCourse extends AppCompatActivity
     // Button to save the Course
     private Button mCourseSaveButton;
 
-    // Boolean flag that keeps track of whether the term has been edited(true) or not (false)
-    private boolean mTermHasChanged = false;
+    // Boolean flag that keeps track of whether the course has been edited(true) or not (false)
+    private boolean mCourseHasChanged = false;
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent event) {
-            mTermHasChanged = true;
+            mCourseHasChanged = true;
             return false;
         }
     };
@@ -70,7 +70,7 @@ public class AddCourse extends AppCompatActivity
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Examine the intent that launched this activity in order to figure out if a term is
+        // Examine the intent that launched this activity in order to figure out if a course is
         // being created or edited.
         Intent intent = getIntent();
         mCurrentCourseUri = intent.getData();
@@ -102,7 +102,7 @@ public class AddCourse extends AppCompatActivity
         mCourseMentorEmailEditText = (EditText) findViewById(R.id.edit_course_mentor_email); 
         mCourseSaveButton = (Button) findViewById(R.id.edit_course_save_button);
 
-        // Create onClickListener for save button to call insertTerm
+        // Create onClickListener for save button to call insertCourse
         mCourseSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,8 +171,8 @@ public class AddCourse extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        // If the product hasn't changed, continue with handling back button press
-        if (!mTermHasChanged) {
+        // If the course hasn't changed, continue with handling back button press
+        if (!mCourseHasChanged) {
             super.onBackPressed();
             return;
         }
@@ -190,8 +190,7 @@ public class AddCourse extends AppCompatActivity
         showUnsavedChangesDialog(discardButtonClickListener);
     }
 
-    private void showUnsavedChangesDialog(
-            DialogInterface.OnClickListener discardButtonClickListener) {
+    private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonClickListener) {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -234,7 +233,7 @@ public class AddCourse extends AppCompatActivity
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor.moveToFirst()) {
-            //Find the index of each term column we are interested in
+            //Find the index of each course column we are interested in
             int nameColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_NAME);
             int startColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_START);
             int endColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_END);
@@ -252,7 +251,7 @@ public class AddCourse extends AppCompatActivity
             String mentorPhone = cursor.getString(mentorPhoneColumnIndex);
             String mentorEmail = cursor.getString(mentorEmailColumnIndex);
 
-            // Update the TextView's on the screen with the values from the Database
+            // Update the EditViews on the screen with the values from the Database
             mCourseNameEditText.setText(name);
             mCourseStartDateEditText.setText(start);
             mCourseEndDateEditText.setText(end);
