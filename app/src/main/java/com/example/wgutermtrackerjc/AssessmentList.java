@@ -53,8 +53,10 @@ public class AssessmentList extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(AssessmentList.this, AddAssessment.class);
+                // Get the Id from the course to pass on to the AddAssessment activity
+                intent.putExtra("courseId", currentCourseId);
+                startActivity(intent);
             }
         });
         // Get the intent that launched this activity
