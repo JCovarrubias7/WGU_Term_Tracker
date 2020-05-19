@@ -125,7 +125,7 @@ public class CoursesList extends AppCompatActivity
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Delete all courses?");
+        builder.setMessage("Delete all courses in this Term?");
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the product.
@@ -151,18 +151,31 @@ public class CoursesList extends AppCompatActivity
     private void deleteCourses() {
         // Only perform the delete if there is an existing course
         if (CourseEntry.CONTENT_URI_COURSES != null) {
-            // Call the ContentResolver to delete the course at the given URI.
-            int rowsDeleted = getContentResolver().delete(CourseEntry.CONTENT_URI_COURSES, null, null);
-            // Show a toast message depending on condition
-            if (rowsDeleted == 0) {
-                // If no rows were deleted, then there was an error with the delete.
-                Toast.makeText(this, "Error with deleting all Courses",
-                        Toast.LENGTH_SHORT).show();
+            // Get the courses in this term
+            // Define a projection that specifies the columns from the table we care about
+            String[] projection = {
+                    CourseEntry._ID,
+                    CourseEntry.COLUMN_ASSOCIATED_TERM_ID};
+            // Define a selection
+            String selection = CourseEntry.COLUMN_ASSOCIATED_TERM_ID + "=?";
+            String[] selectionArgs = { String.valueOf(currentTermId) };
+            // Get the cursor with the courses that have current term as their associated term
+            Cursor cursor = getContentResolver().query(CourseEntry.CONTENT_URI_COURSES, projection,
+                    selection, selectionArgs, null);
+            try {
+                while (cursor.moveToNext()) {
+                    // Get column Index
+                    int idColumnIndex = cursor.getColumnIndex(CourseEntry._ID);
+                    // Extract out the values from the Cursor for the given index
+                    Long id = cursor.getLong(idColumnIndex);
+                    // Form the content URI that represents the course
+                    Uri currentCourseUri = ContentUris.withAppendedId(CourseEntry.CONTENT_URI_COURSES, id);
+                    // Call the ContentResolver to delete the course at the given URI.
+                    int rowDelete = getContentResolver().delete(currentCourseUri, null, null);
+                }
             }
-            else {
-                // Otherwise, the delete was successful and we can display a toast.
-                Toast.makeText(this, "All courses successfully deleted",
-                        Toast.LENGTH_SHORT).show();
+            finally {
+                cursor.close();
             }
         }
     }
