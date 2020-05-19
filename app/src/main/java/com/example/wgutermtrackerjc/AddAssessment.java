@@ -207,7 +207,7 @@ public class AddAssessment extends AppCompatActivity
             int dueDateColumnIndex = cursor.getColumnIndex(AssessmentEntry.COLUMN_ASSESSMENT_DUE_DATE);
             int descriptionColumnIndex = cursor.getColumnIndex(AssessmentEntry.COLUMN_ASSESSMENT_DESCRIPTION);
 
-            // Extra out the values from the Cursor for the given index
+            // Extract out the values from the Cursor for the given index
             String name = cursor.getString(nameColumnIndex);
             String dueDate = cursor.getString(dueDateColumnIndex);
             String description = cursor.getString(descriptionColumnIndex);
