@@ -2,6 +2,7 @@ package com.example.wgutermtrackerjc;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.wgutermtrackerjc.data.DBContract.CourseEntry;
 import com.example.wgutermtrackerjc.data.DBContract.TermEntry;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TermDetails extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -29,6 +32,9 @@ public class TermDetails extends AppCompatActivity
 
     // Content URI for existing term
     private Uri mCurrentTermUri;
+
+    // Hold the term Id that launched this activity
+    long currentTermId;
 
     // Get the All Courses Image Button
     ImageButton allCoursesImageButton;
@@ -52,6 +58,9 @@ public class TermDetails extends AppCompatActivity
         // Get the intent that launched this activity
         Intent intent = getIntent();
         mCurrentTermUri = intent.getData();
+
+        //Set currentTermId with value from URI
+        currentTermId = ContentUris.parseId(mCurrentTermUri);
 
         // Send information to CourseList activity when button is clicked
         allCoursesImageButton = findViewById(R.id.all_courses_button);
@@ -144,11 +153,32 @@ public class TermDetails extends AppCompatActivity
     private void deleteTerm() {
         // Only perform the delete if there is an existing term
         if (mCurrentTermUri != null) {
-            // Call the ContentResolver to delete the term at the given URI.
-            int rowsDeleted = getContentResolver().delete(mCurrentTermUri, null, null);
+            // Get the courses in this term
+            // Define a projection that specifies the columns from the table we care about
+            String[] projection = {
+                    CourseEntry._ID,
+                    CourseEntry.COLUMN_ASSOCIATED_TERM_ID,
+                    CourseEntry.COLUMN_COURSE_NAME,
+                    CourseEntry.COLUMN_COURSE_START,
+                    CourseEntry.COLUMN_COURSE_END,
+                    CourseEntry.COLUMN_COURSE_STATUS};
+
+            // Define a selection
+            String selection = CourseEntry.COLUMN_ASSOCIATED_TERM_ID + "=?";
+            String[] selectionArgs = { String.valueOf(currentTermId) };
+            // Get the cursor with the courses that have current term as their associated term
+            Cursor cursor = getContentResolver().query(CourseEntry.CONTENT_URI_COURSES, projection, selection, selectionArgs, null);
+            if (cursor.getCount() == 0) {
+                // Call the ContentResolver to delete the term at the given URI.
+                int rowsDeleted = getContentResolver().delete(mCurrentTermUri, null, null);
+                // Close the activity
+                finish();
+            }
+            else {
+                Toast.makeText(this, "Term cannot be deleted with courses still associated with it",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
-        // Close the activity
-        finish();
     }
 
     @Override
