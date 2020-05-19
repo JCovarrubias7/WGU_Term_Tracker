@@ -152,18 +152,31 @@ public class AssessmentList extends AppCompatActivity
     private void deleteAssessments() {
         // Only perform the delete if there is an existing assessment
         if (AssessmentEntry.CONTENT_URI_ASSESSMENTS != null) {
-            // Call the ContentResolver to delete the assessment at the given URI.
-            int rowsDeleted = getContentResolver().delete(AssessmentEntry.CONTENT_URI_ASSESSMENTS, null, null);
-            // Show a toast message depending on condition
-            if (rowsDeleted == 0) {
-                // If no rows were deleted, then there was an error with the delete.
-                Toast.makeText(this, "Error with deleting all Assessments",
-                        Toast.LENGTH_SHORT).show();
+            // Get the assessments in this course
+            // Define a projection that specifies the columns from the table we care about
+            String[] projection = {
+                    AssessmentEntry._ID,
+                    AssessmentEntry.COLUMN_ASSOCIATED_COURSE_ID};
+            // Define a selection
+            String selection = AssessmentEntry.COLUMN_ASSOCIATED_COURSE_ID + "=?";
+            String[] selectionArgs = { String.valueOf(currentCourseId) };
+            // Get the cursor with the assessments that have current course as their associated course
+            Cursor cursor = getContentResolver().query(AssessmentEntry.CONTENT_URI_ASSESSMENTS, projection,
+                    selection, selectionArgs, null);
+            try {
+                while (cursor.moveToNext()) {
+                    // Get Column index
+                    int idColumnIndex = cursor.getColumnIndex(AssessmentEntry._ID);
+                    // Extract out the values from the Cursor for the given index
+                    Long id = cursor.getLong(idColumnIndex);
+                    // Form the content URI that represents the assessment
+                    Uri currentAssessmentUri = ContentUris.withAppendedId(AssessmentEntry.CONTENT_URI_ASSESSMENTS, id);
+                    // Call the ContentResolver to delete the course at the given URI.
+                    int rowDelete = getContentResolver().delete(currentAssessmentUri, null, null);
+                }
             }
-            else {
-                // Otherwise, the delete was successful and we can display a toast.
-                Toast.makeText(this, "All assessments successfully deleted",
-                        Toast.LENGTH_SHORT).show();
+            finally {
+                cursor.close();
             }
         }
     }
