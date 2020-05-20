@@ -37,6 +37,7 @@ public class CourseDetails extends AppCompatActivity
     // Get the All Assessments Image Button
     ImageButton allAssessmentImageButton;
 
+    // Initialize Menu
     Menu myMenu;
 
     // TextView field that holds course name
@@ -106,6 +107,7 @@ public class CourseDetails extends AppCompatActivity
         // Inflate the menu options from the res/menu/menu_course_details.xml file
         getMenuInflater().inflate(R.menu.menu_course_details, menu);
         myMenu = menu;
+        // Check to see if the course is completed or dropped, if true, don't display start course menu item
         if(checkCourseStatus()) {
             myMenu.findItem(R.id.action_start_course).setVisible(false);
         }
