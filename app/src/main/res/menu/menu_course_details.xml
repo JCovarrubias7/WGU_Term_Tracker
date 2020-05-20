@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item
         android:id="@+id/action_edit_current_course"
         android:title="@string/edit_current_course" />
     <item
         android:id="@+id/action_delete_current_course"
         android:title="@string/delete_current_course" />
+    <item
+        android:id="@+id/action_start_course"
+        android:title="@string/start_course" />
+    <item
+        android:id="@+id/action_mark_course_complete"
+        android:title="@string/complete_course"
+        android:visible="false" />
+    <item
+        android:id="@+id/action_drop_course"
+        android:title="@string/drop_course"
+        android:visible="false" />
 
 </menu>
