@@ -2,6 +2,7 @@ package com.example.wgutermtrackerjc;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +36,8 @@ public class CourseDetails extends AppCompatActivity
 
     // Get the All Assessments Image Button
     ImageButton allAssessmentImageButton;
+
+    Menu myMenu;
 
     // TextView field that holds course name
     private TextView mCourseNameText;
@@ -102,39 +105,93 @@ public class CourseDetails extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_course_details.xml file
         getMenuInflater().inflate(R.menu.menu_course_details, menu);
+        myMenu = menu;
+        if(checkCourseStatus()) {
+            myMenu.findItem(R.id.action_start_course).setVisible(false);
+        }
         return true;
     }
 
     // Declare what to do with the items in the menu when clicked
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        String status;
         // User clicked on a menu option in the app bar overflow menu
         switch (item.getItemId()) {
             // Respond to a click on the "Delete Course" menu option
             case R.id.action_delete_current_course:
                 showDeleteConfirmationDialog();
                 return true;
-            case R.id.action_edit_current_course:
-                // Get the intent that launched this activity
-                Intent intent = getIntent();
-                // for the content URI that was sent from the CoursesList
-                mCurrentCourseUri = intent.getData();
-                // Create new intent to go to the AddCourse activity
-                Intent newIntent = new Intent(CourseDetails.this, AddCourse.class);
-                // Set the URI on the data files of the Intent
-                newIntent.setData(mCurrentCourseUri);
-                // Get the term Id
-                currentTermId = intent.getLongExtra("termId", -1);
-                // Get Id from term to pass on to the AddCourse activity
-                newIntent.putExtra("termId", currentTermId);
-                // Launch the activity to edit the data for the current Course
-                startActivity(newIntent);
+            case R.id.action_edit_current_course: 
+                editCurrentCourse();
+                return true;
+            case R.id.action_start_course:
+                status = "In Progress";
+                updateCourseStatus(status);
+                // Disable/Enable Menu Items
+                myMenu.findItem(R.id.action_start_course).setVisible(false);
+                myMenu.findItem(R.id.action_mark_course_complete).setVisible(true);
+                myMenu.findItem(R.id.action_drop_course).setVisible(true);
+                return true;
+            case R.id.action_mark_course_complete:
+                status = "Completed";
+                updateCourseStatus(status);
+                // Disable Menu Items
+                myMenu.findItem(R.id.action_mark_course_complete).setVisible(false);
+                myMenu.findItem(R.id.action_drop_course).setVisible(false);
+                return true;
+            case R.id.action_drop_course:
+                status = "Dropped";
+                updateCourseStatus(status);
+                // Disable Menu Items
+                myMenu.findItem(R.id.action_mark_course_complete).setVisible(false);
+                myMenu.findItem(R.id.action_drop_course).setVisible(false);
                 return true;
             case android.R.id.home:
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean checkCourseStatus() {
+        String completed = "Completed";
+        String dropped = "Dropped";
+        Cursor cursor = getContentResolver().query(mCurrentCourseUri, null, null,
+                null, null);
+        if (cursor.moveToFirst()) {
+            // Get Column Index
+            int courseStatusColumnIndex = cursor.getColumnIndex(CourseEntry.COLUMN_COURSE_STATUS);
+            // Extract out the value from the Cursor for the given index
+            String courseStatus = cursor.getString(courseStatusColumnIndex);
+            return courseStatus.equals(completed) | courseStatus.equals(dropped);
+        }
+        return false;
+    }
+
+    private void updateCourseStatus(String status) {
+        // Set the value to update the course
+        ContentValues values = new ContentValues();
+        values.put(CourseEntry.COLUMN_COURSE_STATUS, status);
+        // Call the ContentResolver to update the course
+        int updatedRow = getContentResolver().update(mCurrentCourseUri, values, null, null);
+    }
+
+    private void editCurrentCourse() {
+        // Get the intent that launched this activity
+        Intent intent = getIntent();
+        // for the content URI that was sent from the CoursesList
+        mCurrentCourseUri = intent.getData();
+        // Create new intent to go to the AddCourse activity
+        Intent newIntent = new Intent(CourseDetails.this, AddCourse.class);
+        // Set the URI on the data files of the Intent
+        newIntent.setData(mCurrentCourseUri);
+        // Get the term Id
+        currentTermId = intent.getLongExtra("termId", -1);
+        // Get Id from term to pass on to the AddCourse activity
+        newIntent.putExtra("termId", currentTermId);
+        // Launch the activity to edit the data for the current Course
+        startActivity(newIntent);
     }
 
     // Create the delete confirmation dialog message when deleting a course
