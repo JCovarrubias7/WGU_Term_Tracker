@@ -3,6 +3,7 @@ package com.example.wgutermtrackerjc;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -116,11 +117,47 @@ public class TermDetails extends AppCompatActivity
                 // Launch the activity to edit the data for the current term
                 startActivity(newIntent);
                 return true;
+            case R.id.action_set_active_current_term:
+                setActiveCurrentTerm();
+                return true;
             case android.R.id.home:
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setActiveCurrentTerm() {
+        // Define a projection that specifies the columns from the table we care about
+        String[] projection = {
+                TermEntry._ID,
+                TermEntry.COLUMN_TERM_ACTIVE};
+
+        // Get all the terms
+        Cursor cursor = getContentResolver().query(TermEntry.CONTENT_URI_TERMS, projection, null,
+                null, null);
+        try {
+            while(cursor.moveToNext()) {
+                // Get column index
+                int idColumnIndex = cursor.getColumnIndex(TermEntry._ID);
+                // Extract out the values from the Cursor for the given index
+                long id = cursor.getLong(idColumnIndex);
+                // Form the content URI that represents the term
+                Uri currentTermUri = ContentUris.withAppendedId(TermEntry.CONTENT_URI_TERMS, id);
+                // Set the values to update the term
+                ContentValues values = new ContentValues();
+                values.put(TermEntry.COLUMN_TERM_ACTIVE, 0);
+                // Call the ContentResolver to update the Active term column
+                int updatedRows = getContentResolver().update(currentTermUri, values, null, null);
+            }
+        }
+        finally {
+            // Set the value to update the term
+            ContentValues values = new ContentValues();
+            values.put(TermEntry.COLUMN_TERM_ACTIVE, 1);
+            int updateRow = getContentResolver().update(mCurrentTermUri, values, null, null);
+            cursor.close();
+        }
     }
 
     // Create the delete confirmation dialog message when deleting a term
