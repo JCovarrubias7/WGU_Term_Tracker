@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.wgutermtrackerjc.data.DBContract.TermEntry;
 import com.example.wgutermtrackerjc.data.DBContract.CourseEntry;
 import com.example.wgutermtrackerjc.data.DBContract.AssessmentEntry;
+import com.example.wgutermtrackerjc.data.DBContract.NoteEntry;
 
 public class DBContentProvider extends ContentProvider {
 
@@ -22,6 +23,8 @@ public class DBContentProvider extends ContentProvider {
     public static final int COURSE_ID = 2001;
     public static final int ASSESSMENTS = 3000;
     public static final int ASSESSMENT_ID = 3001;
+    public static final int NOTES = 4000;
+    public static final int NOTE_ID = 4001;
 
     // URI object to match a content URI to a corresponding code
     public static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -41,6 +44,11 @@ public class DBContentProvider extends ContentProvider {
         sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_ASSESSMENTS, ASSESSMENTS);
         // The content URI of ASSESSMENT_ID will map to the integer in ASSESSMENT_ID(3001) to provide access to one row
         sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_ASSESSMENTS + "/#", ASSESSMENT_ID);
+
+        // The content URI of NOTES will map to the integer in NOTES(4000) to provide access to the whole table
+        sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_NOTES, NOTES);
+        // The content URI of NOTE_ID will map to the integer in NOTES_ID(4001) to provide access to one row
+        sUriMatcher.addURI(DBContract.CONTENT_AUTHORITY, DBContract.PATH_NOTES + "/#", NOTE_ID);
     }
 
     //Database helper object
@@ -95,6 +103,16 @@ public class DBContentProvider extends ContentProvider {
                 cursor = database.query(AssessmentEntry.TABLE_NAME_ASSESSMENTS, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
+            case NOTES:
+                cursor = database.query(NoteEntry.TABLE_NAME_NOTES, projection, selection, selectionArgs,
+                        null, null, sortOrder);
+                break;
+            case NOTE_ID:
+                selection = NoteEntry._ID + "=?";
+                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
+                cursor = database.query(NoteEntry.TABLE_NAME_NOTES, projection, selection, selectionArgs,
+                        null, null, sortOrder);
+                break;
             default:
                 throw new IllegalArgumentException("Cannot query unknown URI" + uri);
         }
@@ -114,6 +132,8 @@ public class DBContentProvider extends ContentProvider {
                 return insertCourse(uri, contentValues);
             case ASSESSMENTS:
                 return insertAssessment(uri, contentValues);
+            case NOTES:
+                return insertNote(uri, contentValues);
             default:
                 throw new IllegalArgumentException("Insertion is not support for" + uri);
         }
@@ -182,6 +202,27 @@ public class DBContentProvider extends ContentProvider {
         return ContentUris.withAppendedId(uri, id);
     }
 
+    private Uri insertNote(Uri uri, ContentValues values) {
+        // Get Writable database
+        SQLiteDatabase database = mDBHelper.getWritableDatabase();
+        // Insert the new note with the given values
+        long id = database.insert(NoteEntry.TABLE_NAME_NOTES, null, values);
+        // Show a toast message whether or not the insertion was successful
+        if (id == -1) {
+            Toast.makeText(getContext(), "Error saving the note", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        else {
+            Toast.makeText(getContext(), "Note saved with row id: " + id, Toast.LENGTH_SHORT).show();
+        }
+
+        // Notify all listeners that the data has changed for the notes content URI
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        // Once we know the ID of the new row, return a new URI with the ID appended to the end of it
+        return ContentUris.withAppendedId(uri, id);
+    }
+
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         final int match = sUriMatcher.match(uri);
@@ -204,6 +245,12 @@ public class DBContentProvider extends ContentProvider {
                 selection = AssessmentEntry._ID + "=?";
                 selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
                 return updateAssessment(uri, contentValues, selection, selectionArgs);
+            case NOTES:
+                return updateNote(uri, contentValues, selection, selectionArgs);
+            case NOTE_ID:
+                selection = NoteEntry._ID + "=?";
+                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
+                return updateNote(uri, contentValues, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException("Update is not support for" + uri);
         }
@@ -284,6 +331,31 @@ public class DBContentProvider extends ContentProvider {
         return rowsUpdated;
     }
 
+    private int updateNote(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        // No need to update the note if there are no values to update
+        if (values.size() == 0) {
+            return 0;
+        }
+        // Otherwise, get the writeable database to update the data
+        SQLiteDatabase database = mDBHelper.getWritableDatabase();
+
+        // Perform the update on the database and get the number of rows affected
+        int rowsUpdated = database.update(NoteEntry.TABLE_NAME_NOTES, values, selection, selectionArgs);
+        // Show a toast message whether or not the update was successful
+        if (rowsUpdated == 0) {
+            Toast.makeText(getContext(), "Error saving the note", Toast.LENGTH_SHORT).show();
+            return 0;
+        }
+        else {
+            Toast.makeText(getContext(), "Note updated", Toast.LENGTH_SHORT).show();
+        }
+        // If 1 or more rows were updated, notify all listeners about the change
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
+    }
+
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         // Get writeable database
@@ -319,10 +391,20 @@ public class DBContentProvider extends ContentProvider {
                 rowsDeleted = database.delete(AssessmentEntry.TABLE_NAME_ASSESSMENTS, selection, selectionArgs);
                 break;
             case ASSESSMENT_ID:
-                // Delete a single row give by the ID in the URI
+                // Delete a single row given by the ID in the URI
                 selection = AssessmentEntry._ID + "=?";
                 selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
                 rowsDeleted = database.delete(AssessmentEntry.TABLE_NAME_ASSESSMENTS, selection, selectionArgs);
+                break;
+            case NOTES:
+                // Delete all rows that match the selection and selection args
+                rowsDeleted = database.delete(NoteEntry.TABLE_NAME_NOTES, selection, selectionArgs);
+                break;
+            case NOTE_ID:
+                // Delete a single row given by the ID in the URI
+                selection = NoteEntry._ID + "=?";
+                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
+                rowsDeleted = database.delete(NoteEntry.TABLE_NAME_NOTES, selection, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
