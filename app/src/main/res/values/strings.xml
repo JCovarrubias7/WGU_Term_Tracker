@@ -91,12 +91,16 @@
     <string name="empty_assessments_text">Click the button to add an assessment</string>
 
     <!-- Menu_term_details Strings -->
+    <string name="set_active_current_term">Set Current/Active Term</string>
     <string name="delete_current_term">Delete Term</string>
     <string name="edit_current_term">Edit Term</string>
 
     <!-- Menu_course_details Strings -->
     <string name="delete_current_course">Delete Course</string>
     <string name="edit_current_course">Edit Course</string>
+    <string name="start_course">Start Course</string>
+    <string name="complete_course">Mark Course Complete</string>
+    <string name="drop_course">Drop Course</string>
 
     <!-- Menu_assessment_details Strings -->
     <string name="delete_current_assessment">Delete Assessment</string>
