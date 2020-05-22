@@ -26,11 +26,18 @@
         android:text="@string/course_note_textView"
         android:textAppearance="?android:textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/course_note_data"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textAppearance="?android:textAppearanceMedium" />
+        android:scrollbars="vertical" >
+
+        <TextView
+            android:id="@+id/course_note_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:textAppearanceMedium" />
+
+    </ScrollView>
 
 </LinearLayout>
