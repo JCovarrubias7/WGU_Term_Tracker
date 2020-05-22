@@ -88,6 +88,10 @@ public class AddNote extends AppCompatActivity
         // Set the Course Name to display
         setCourseName();
 
+        // Setup OnToucheListeners on all the input files to determine if the user has touched,
+        // or modified them
+        mCourseNote.setOnTouchListener(mTouchListener);
+
         // Create onClickListener for save button to call insertNote
         mNoteSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +193,7 @@ public class AddNote extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
