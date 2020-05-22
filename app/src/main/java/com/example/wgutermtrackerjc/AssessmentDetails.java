@@ -2,6 +2,7 @@ package com.example.wgutermtrackerjc;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.wgutermtrackerjc.data.DBContract.NoteEntry;
 import com.example.wgutermtrackerjc.data.DBContract.AssessmentEntry;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +19,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class AssessmentDetails extends AppCompatActivity
@@ -28,8 +32,11 @@ public class AssessmentDetails extends AppCompatActivity
     // Content URI for existing assessment
     private Uri mCurrentAssessmentUri;
 
-    // Hold the courseId that launched this activity
-    long currentCourseId;
+    // Hold the courseId that launched this activity and noteId
+    long currentCourseId, noteId;
+
+    // Get ImageButton for Notes
+    ImageButton notesImageButton;
 
     // TextView field that holds the assessment name
     private TextView mAssessmentNameText;
@@ -54,6 +61,37 @@ public class AssessmentDetails extends AppCompatActivity
         // Get the course ID
         currentCourseId = intent.getLongExtra("courseId", -1);
 
+        // Send information to Add/Details Note activity when button is clicked
+        notesImageButton = findViewById(R.id.notes_button);
+        notesImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // if courseNoteChecker is true get AddNote Activity, if false, get Note Details activity
+                if (courseNoteChecker()) {
+                    // Create new intent to go to AddNote activity
+                    Intent newIntent = new Intent(AssessmentDetails.this, AddNote.class);
+                    // Set the data on the intent
+                    newIntent.putExtra("courseId", currentCourseId);
+                    // Launch the activity to add the note to the course
+                    startActivity(newIntent);
+                }
+                else {
+                    // Create new intent to go to Note Details activity
+                    Intent newIntent = new Intent(AssessmentDetails.this, NoteDetails.class);
+                    // Get the noteId
+                    getNoteId();
+                    // Form the content URI that represents the note that will be viewed on button click
+                    Uri currentNoteUri = ContentUris.withAppendedId(NoteEntry.CONTENT_URI_NOTES, noteId);
+                    // Set the data on the intent
+                    newIntent.setData(currentNoteUri);
+                    // Get Id from course to pass on to the Note Details activity
+                    newIntent.putExtra("courseId", currentCourseId);
+                    // Launch the activity to add the note to the course
+                    startActivity(newIntent);
+                }
+            }
+        });
+
         // Find views that we want to set the values from the intent
         mAssessmentNameText = (TextView) findViewById(R.id.assessment_name);
         mAssessmentDueDateText = (TextView) findViewById(R.id.assessment_item_due_date);
@@ -61,6 +99,37 @@ public class AssessmentDetails extends AppCompatActivity
 
         // Initialize the loader to read the assessment data from the Database
         getLoaderManager().initLoader(EXISTING_ASSESSMENT_LOADER, null, this);
+    }
+
+    // Get id for note associated with course
+    private void getNoteId() {
+        //Define a selection
+        String selection = NoteEntry.COLUMN_NOTES_ASSOCIATED_COURSE_ID + "=?";
+        String[] selectionArgs = { String.valueOf(currentCourseId) };
+        // Get Cursor with the notes associated to this course
+        Cursor cursor = getContentResolver().query(NoteEntry.CONTENT_URI_NOTES, null,
+                selection, selectionArgs, null);
+        // Get the data that we need to set the noteId
+        if (cursor.moveToFirst()) {
+            // Find the index of each note column we are interested in
+            int noteIdColumnIndex = cursor.getColumnIndex(NoteEntry._ID);
+            // Extract out the values from the Cursor for the given index
+            noteId = cursor.getLong(noteIdColumnIndex);
+        }
+    }
+
+    // Check whether the course DOES NOT has a note associated with it(true) or does(false)
+    private boolean courseNoteChecker() {
+        //Define a selection
+        String selection = NoteEntry.COLUMN_NOTES_ASSOCIATED_COURSE_ID + "=?";
+        String[] selectionArgs = { String.valueOf(currentCourseId) };
+        // Get Cursor with the notes associated to this course
+        Cursor cursor = getContentResolver().query(NoteEntry.CONTENT_URI_NOTES, null,
+                selection, selectionArgs, null);
+        if (cursor.getCount() == 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
