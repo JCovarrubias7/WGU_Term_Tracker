@@ -119,6 +119,7 @@
     <!-- Menu_note_details Strings -->
     <string name="delete_current_note">Delete Note</string>
     <string name="edit_current_note">Edit Note</string>
+    <string name="email_current_note">Email Note</string>
 
     <!-- Term View Strings -->
     <string name="all_courses">All Courses</string>
