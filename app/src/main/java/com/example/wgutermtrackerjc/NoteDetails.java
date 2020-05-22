@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class NoteDetails extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -116,12 +117,31 @@ public class NoteDetails extends AppCompatActivity
                 // Launch the activity to edit the data fro the current Note
                 startActivity(newIntent);
                 return true;
+            case R.id.action_email_notes:
+                emailNote();
+                return true;
             case android.R.id.home:
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void emailNote() {
+        // Create intent to send to email
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        // Set the values to send
+        intent.putExtra(Intent.EXTRA_SUBJECT, mCourseNameText.getText() + " Notes");
+        intent.putExtra(Intent.EXTRA_TEXT, mCourseNote.getText());
+        try {
+            startActivity(Intent.createChooser(intent, "Send email..."));
+        }
+        catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(NoteDetails.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     // Create the delete confirmation dialog message when deleting a note
     private void showDeleteConfirmationDialog() {
@@ -132,7 +152,7 @@ public class NoteDetails extends AppCompatActivity
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the product.
-                deleteAssessment();
+                deleteNote();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -150,7 +170,7 @@ public class NoteDetails extends AppCompatActivity
     }
 
     // Perform the deletion of the note in the database
-    private void deleteAssessment() {
+    private void deleteNote() {
         // Only perform the deletion if there is an existing note
         if (mCurrentNoteUri != null) {
             // Call the ContentResolver to delete the note at the given Uri
