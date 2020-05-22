@@ -146,19 +146,60 @@
             android:textAppearance="?android:textAppearanceMedium" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="135dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        android:text="@string/course_assignments_textView" />
+        android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/all_assignments_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/course_assignments_icon_description"
-        app:srcCompat="@drawable/ic_assignment" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/course_assignments_textView" />
+
+            <ImageButton
+                android:id="@+id/all_assignments_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/course_assignments_icon_description"
+                app:srcCompat="@drawable/ic_assignment" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="135dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/course_notes_textView" />
+
+            <ImageButton
+                android:id="@+id/notes_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/course_notes_icon_description"
+                app:srcCompat="@drawable/ic_comment" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

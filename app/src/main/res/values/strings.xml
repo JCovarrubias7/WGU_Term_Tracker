@@ -16,6 +16,9 @@
     <string name="title_activity_assessment_details">Assessment Details</string>
     <string name="title_activity_add_term">Add a Term</string>
     <string name="title_activity_add_course">Add a Course</string>
+    <string name="title_activity_add_assessment">Add an Assessment</string>
+    <string name="title_activity_add_note">Add Course Note</string>
+    <string name="title_activity_note_details">Course Note Details</string>
 
     <!-- All Terms Screen Menu strings -->
     <string name="insert_test_data">Insert Test Data</string>
@@ -57,8 +60,13 @@
     <string name="assessment_description">Assessment Description</string>
     <string name="assessment_name_hint">Objective assessment 1</string>
     <string name="assessment_due_date_hint">07/07/2020</string>
-    <string name="assessment_description_hint">Create an application that will ...</string>
+    <string name="assessment_description_hint">Create an application that will...</string>
     <string name="assessment_save_button">Save</string>
+
+    <!-- Add Notes TextView Strings -->
+    <string name="course_note_textView">Course Note:</string>
+    <string name="course_note_hint">Add your course notes here...</string>
+    <string name="note_dave_button">Save</string>
 
     <!-- list_term_item TextView Strings -->
     <string name="list_item_start_date">Start Date: </string>
@@ -84,6 +92,8 @@
     <!-- content_course_details TextView Strings -->
     <string name="course_assignments_textView">Course Assignments</string>
     <string name="course_assignments_icon_description">Multiple assignment icon</string>
+    <string name="course_notes_textView">Course Notes</string>
+    <string name="course_notes_icon_description">Course Notes Icon</string>
 
     <!-- empty TextView text -->
     <string name="empty_term_text">Click the button to add a term</string>
@@ -106,19 +116,12 @@
     <string name="delete_current_assessment">Delete Assessment</string>
     <string name="edit_current_assessment">Edit Assessment</string>
 
+    <!-- Menu_note_details Strings -->
+    <string name="delete_current_note">Delete Note</string>
+    <string name="edit_current_note">Edit Note</string>
+
     <!-- Term View Strings -->
     <string name="all_courses">All Courses</string>
     <string name="all_courses_icon_description">Multiple courses icon</string>
-
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_add_assessment">Add an Assessment</string>
-
 
 </resources>
