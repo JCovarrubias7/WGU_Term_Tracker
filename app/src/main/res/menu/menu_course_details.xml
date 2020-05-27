@@ -9,6 +9,9 @@
         android:id="@+id/action_delete_current_course"
         android:title="@string/delete_current_course" />
     <item
+        android:id="@+id/action_enable_notifications"
+        android:title="@string/enable_notifications" />
+    <item
         android:id="@+id/action_start_course"
         android:title="@string/start_course" />
     <item

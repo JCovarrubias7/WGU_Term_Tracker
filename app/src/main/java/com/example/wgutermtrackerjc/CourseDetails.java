@@ -1,7 +1,9 @@
 package com.example.wgutermtrackerjc;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
@@ -23,6 +25,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CourseDetails extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -196,6 +203,18 @@ public class CourseDetails extends AppCompatActivity
             case R.id.action_edit_current_course: 
                 editCurrentCourse();
                 return true;
+            case R.id.action_enable_notifications:
+                try {
+                    enableNotificationsStart();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    enableNotificationsEnd();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return true;
             case R.id.action_start_course:
                 status = "In Progress";
                 updateCourseStatus(status);
@@ -246,6 +265,48 @@ public class CourseDetails extends AppCompatActivity
         values.put(CourseEntry.COLUMN_COURSE_STATUS, status);
         // Call the ContentResolver to update the course
         int updatedRow = getContentResolver().update(mCurrentCourseUri, values, null, null);
+    }
+
+    private void enableNotificationsStart() throws ParseException {
+        Intent intent = new Intent(CourseDetails.this, ReminderBroadcast.class);
+        intent.putExtra("key", "Your Course Starts Today");
+        intent.putExtra("channel_id", "start");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(CourseDetails.this, 0, intent,  PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date stringDate = simpleDateFormat.parse(mCourseStartDateText.getText().toString());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(stringDate);
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE), 0,0);
+
+        long dateMillis = cal.getTimeInMillis();
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                dateMillis,
+                pendingIntent);
+    }
+
+    private void enableNotificationsEnd() throws ParseException {
+        Intent endIntent = new Intent(CourseDetails.this, ReminderBroadcast.class);
+        endIntent.putExtra("key", "Your Course Ends Today");
+        endIntent.putExtra("channel_id", "end");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(CourseDetails.this, 1, endIntent, PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date stringDate = simpleDateFormat.parse(mCourseEndDateText.getText().toString());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(stringDate);
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE), 0,0);
+
+        long dateMillis = cal.getTimeInMillis();
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                dateMillis,
+                pendingIntent);
     }
 
     private void editCurrentCourse() {
