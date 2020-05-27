@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -214,6 +215,7 @@ public class CourseDetails extends AppCompatActivity
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                Toast.makeText(CourseDetails.this, "Notification Set", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.action_start_course:
                 status = "In Progress";

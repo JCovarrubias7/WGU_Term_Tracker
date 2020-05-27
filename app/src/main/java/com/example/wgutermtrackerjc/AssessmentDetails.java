@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -204,6 +205,8 @@ public class AssessmentDetails extends AppCompatActivity
         alarmManager.set(AlarmManager.RTC_WAKEUP,
                 dateMillis,
                 pendingIntent);
+
+        Toast.makeText(AssessmentDetails.this, "Notification Set", Toast.LENGTH_SHORT).show();
     }
 
     // Create the delete confirmation dialog message when deleting an assessment
