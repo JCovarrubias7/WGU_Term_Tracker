@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -27,11 +28,13 @@ public class ReminderBroadcast extends BroadcastReceiver {
         Notification notification = new NotificationCompat.Builder(context, channel_id)
                 .setSmallIcon(R.drawable.ic_priority_high)
                 .setContentText(intent.getStringExtra("key"))
-                .setContentTitle("Reminder WGU Term Tracker "+Integer.toString(notificationId)).build();
+                .setContentTitle("Reminder WGU Term Tracker ").build();
 
         // Display the notification, passing it a unique Id
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(notificationId++, notification);
+
+        Toast.makeText(context, "Notification Set", Toast.LENGTH_SHORT).show();
     }
 
     private void createNotificationChannel(Context context, String channel_id) {
