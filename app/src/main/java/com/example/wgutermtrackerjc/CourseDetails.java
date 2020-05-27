@@ -269,7 +269,7 @@ public class CourseDetails extends AppCompatActivity
 
     private void enableNotificationsStart() throws ParseException {
         Intent intent = new Intent(CourseDetails.this, ReminderBroadcast.class);
-        intent.putExtra("key", "Your Course Starts Today");
+        intent.putExtra("key", "Your course starts today");
         intent.putExtra("channel_id", "start");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(CourseDetails.this, 0, intent,  PendingIntent.FLAG_ONE_SHOT);
 
@@ -290,7 +290,7 @@ public class CourseDetails extends AppCompatActivity
 
     private void enableNotificationsEnd() throws ParseException {
         Intent endIntent = new Intent(CourseDetails.this, ReminderBroadcast.class);
-        endIntent.putExtra("key", "Your Course Ends Today");
+        endIntent.putExtra("key", "Your course ends today");
         endIntent.putExtra("channel_id", "end");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(CourseDetails.this, 1, endIntent, PendingIntent.FLAG_ONE_SHOT);
 
