@@ -8,4 +8,8 @@
         android:id="@+id/action_delete_current_assessment"
         android:title="@string/delete_current_assessment" />
 
+    <item
+        android:id="@+id/action_enable_notifications"
+        android:title="@string/enable_notifications" />
+
 </menu>
