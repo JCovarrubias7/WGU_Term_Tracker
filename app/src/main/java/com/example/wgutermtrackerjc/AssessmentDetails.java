@@ -1,7 +1,9 @@
 package com.example.wgutermtrackerjc;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -22,6 +24,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AssessmentDetails extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -164,11 +171,39 @@ public class AssessmentDetails extends AppCompatActivity
                 // Launch the activity to edit the data for the current Assessment
                 startActivity(newIntent);
                 return true;
+            case R.id.action_enable_notifications:
+                try {
+                    enableNotificationsStart();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return true;
             case android.R.id.home:
                 finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void enableNotificationsStart() throws ParseException {
+        Intent intent = new Intent(AssessmentDetails.this, ReminderBroadcast.class);
+        intent.putExtra("key", "Your projected assessment due date is today");
+        intent.putExtra("channel_id", "assessmentDue");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(AssessmentDetails.this, 2, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date stringDate = simpleDateFormat.parse(mAssessmentDueDateText.getText().toString());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(stringDate);
+        cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE), 0, 0);
+
+        long dateMillis = cal.getTimeInMillis();
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                dateMillis,
+                pendingIntent);
     }
 
     // Create the delete confirmation dialog message when deleting an assessment
