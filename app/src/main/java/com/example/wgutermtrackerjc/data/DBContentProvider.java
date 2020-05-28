@@ -16,6 +16,8 @@ import com.example.wgutermtrackerjc.data.DBContract.NoteEntry;
 
 public class DBContentProvider extends ContentProvider {
 
+    private Toast mToast;
+
     // URI matcher code for the content URI for the Terms table and single term
     public static final int TERMS= 1000;
     public static final int TERM_ID = 1001;
@@ -146,11 +148,17 @@ public class DBContentProvider extends ContentProvider {
         long id = database.insert(TermEntry.TABLE_NAME_TERMS, null, values);
         // Show a toast message whether or not the insertion was successful
         if (id == -1) {
-            Toast.makeText(getContext(), "Error saving the term", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Error saving the term", Toast.LENGTH_SHORT);
+            mToast.show();
             return null;
         }
         else {
-            Toast.makeText(getContext(), "Term saved with row id: " + id, Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast =  Toast.makeText(getContext(), "Term saved with row id: " + id, Toast.LENGTH_SHORT);
+            mToast.show();
         }
 
         // Notify all listeners that the data has changed for the term content URI
@@ -167,11 +175,17 @@ public class DBContentProvider extends ContentProvider {
         long id = database.insert(CourseEntry.TABLE_NAME_COURSES, null, values);
         // Show a toast message whether or not the insertion was successful
         if (id == -1) {
-            Toast.makeText(getContext(), "Error saving the course", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Error saving the course", Toast.LENGTH_SHORT);
+            mToast.show();
             return null;
         }
         else {
-            Toast.makeText(getContext(), "Course saved with row id: " + id, Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Course saved with row id: " + id, Toast.LENGTH_SHORT);
+            mToast.show();
         }
 
         // Notify all listeners that the data has changed for the course content URI
@@ -188,11 +202,17 @@ public class DBContentProvider extends ContentProvider {
         long id = database.insert(AssessmentEntry.TABLE_NAME_ASSESSMENTS, null, values);
         // Show a toast message whether or not the insertion was successful
         if (id == -1) {
-            Toast.makeText(getContext(), "Error saving the assessment", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Error saving the assessment", Toast.LENGTH_SHORT);
+            mToast.show();
             return null;
         }
         else {
-            Toast.makeText(getContext(), "Assessment saved with row id: " + id, Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Assessment saved with row id: " + id, Toast.LENGTH_SHORT);
+            mToast.show();
         }
 
         // Notify all listeners that the data has changed for the assessment content URI
@@ -209,11 +229,17 @@ public class DBContentProvider extends ContentProvider {
         long id = database.insert(NoteEntry.TABLE_NAME_NOTES, null, values);
         // Show a toast message whether or not the insertion was successful
         if (id == -1) {
-            Toast.makeText(getContext(), "Error saving the note", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Error saving the note", Toast.LENGTH_SHORT);
+            mToast.show();
             return null;
         }
         else {
-            Toast.makeText(getContext(), "Note saved with row id: " + id, Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Note saved with row id: " + id, Toast.LENGTH_SHORT);
+            mToast.show();
         }
 
         // Notify all listeners that the data has changed for the notes content URI
@@ -268,11 +294,17 @@ public class DBContentProvider extends ContentProvider {
         int rowsUpdated = database.update(TermEntry.TABLE_NAME_TERMS, values, selection, selectionArgs);
         // Show a toast message whether or not the update was successful
         if (rowsUpdated == 0) {
-            Toast.makeText(getContext(), "Error saving the Term", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Error saving the Term", Toast.LENGTH_SHORT);
+            mToast.show();
             return 0;
         }
         else {
-            Toast.makeText(getContext(), "Term updated", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Term updated", Toast.LENGTH_SHORT);
+            mToast.show();
         }
         // If 1 or more rows were updated, notify all listeners about the change
         if (rowsUpdated != 0) {
@@ -293,11 +325,17 @@ public class DBContentProvider extends ContentProvider {
         int rowsUpdated = database.update(CourseEntry.TABLE_NAME_COURSES, values, selection, selectionArgs);
         // Show a toast message whether or not the update was successful
         if (rowsUpdated == 0) {
-            Toast.makeText(getContext(), "Error saving the course", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Error saving the course", Toast.LENGTH_SHORT);
+            mToast.show();
             return 0;
         }
         else {
-            Toast.makeText(getContext(), "Course updated", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Course updated", Toast.LENGTH_SHORT);
+            mToast.show();
         }
         // If 1 or more rows were updated, notify all listeners about the change
         if (rowsUpdated != 0) {
@@ -318,11 +356,17 @@ public class DBContentProvider extends ContentProvider {
         int rowsUpdated = database.update(AssessmentEntry.TABLE_NAME_ASSESSMENTS, values, selection, selectionArgs);
         // Show a toast message whether or not the update was successful
         if (rowsUpdated == 0) {
-            Toast.makeText(getContext(), "Error saving the assessment", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Error saving the assessment", Toast.LENGTH_SHORT);
+            mToast.show();
             return 0;
         }
         else {
-            Toast.makeText(getContext(), "Assessment updated", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Assessment updated", Toast.LENGTH_SHORT);
+            mToast.show();
         }
         // If 1 or more rows were updated, notify all listeners about the change
         if (rowsUpdated != 0) {
@@ -343,11 +387,17 @@ public class DBContentProvider extends ContentProvider {
         int rowsUpdated = database.update(NoteEntry.TABLE_NAME_NOTES, values, selection, selectionArgs);
         // Show a toast message whether or not the update was successful
         if (rowsUpdated == 0) {
-            Toast.makeText(getContext(), "Error saving the note", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Error saving the note", Toast.LENGTH_SHORT);
+            mToast.show();
             return 0;
         }
         else {
-            Toast.makeText(getContext(), "Note updated", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Note updated", Toast.LENGTH_SHORT);
+            mToast.show();
         }
         // If 1 or more rows were updated, notify all listeners about the change
         if (rowsUpdated != 0) {
@@ -411,11 +461,17 @@ public class DBContentProvider extends ContentProvider {
         }
         // Show a toast message whether or not the deletion was successful
         if (rowsDeleted == 0) {
-            Toast.makeText(getContext(), "Error with deletion", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Error with deletion", Toast.LENGTH_SHORT);
+            mToast.show();
             return 0;
         }
         else {
-            Toast.makeText(getContext(), "Deletion completed successfully", Toast.LENGTH_SHORT).show();
+            if (mToast != null)
+                mToast.cancel();
+            mToast = Toast.makeText(getContext(), "Deletion completed successfully", Toast.LENGTH_SHORT);
+            mToast.show();
         }
         // If 1 or more rows were deleted, notify all listeners that the data has changed
         if (rowsDeleted != 0) {
