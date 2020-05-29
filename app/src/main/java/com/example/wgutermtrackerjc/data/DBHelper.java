@@ -9,6 +9,8 @@ import com.example.wgutermtrackerjc.data.DBContract.CourseEntry;
 import com.example.wgutermtrackerjc.data.DBContract.AssessmentEntry;
 import com.example.wgutermtrackerjc.data.DBContract.NoteEntry;
 
+import java.util.ArrayList;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     // Database name and version constants
@@ -54,10 +56,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 + NoteEntry.COLUMN_NOTES + " TEXT);";
 
         // Execute the SQL Statement
-        db.execSQL(SQL_CREATE_TERMS_TABLE);
-        db.execSQL(SQL_CREATE_COURSES_TABLE);
-        db.execSQL(SQL_CREATE_ASSESSMENT_TABLE);
-        db.execSQL(SQL_CREATE_NOTES_TABLE);
+        ArrayList<String> tableNamesList = new ArrayList<>();
+        tableNamesList.add(SQL_CREATE_TERMS_TABLE);
+        tableNamesList.add(SQL_CREATE_COURSES_TABLE);
+        tableNamesList.add(SQL_CREATE_ASSESSMENT_TABLE);
+        tableNamesList.add(SQL_CREATE_NOTES_TABLE);
+
+        for (String str : tableNamesList) {
+            db.execSQL(str);
+        }
     }
 
     //Upgrade is called when the database needs to be upgraded

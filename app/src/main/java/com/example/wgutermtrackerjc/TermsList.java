@@ -27,6 +27,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class TermsList extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -223,10 +226,15 @@ public class TermsList extends AppCompatActivity
 
         // Insert a new row into the database and return the ID of the new row
         //long newRowId = db.insert(TermEntry.TABLE_NAME, null, values);
-        getContentResolver().insert(TermEntry.CONTENT_URI_TERMS, values);
-        getContentResolver().insert(TermEntry.CONTENT_URI_TERMS, values1);
-        getContentResolver().insert(TermEntry.CONTENT_URI_TERMS, values2);
-        getContentResolver().insert(TermEntry.CONTENT_URI_TERMS, values3);
+        ArrayList<ContentValues> cvList = new ArrayList<>();
+        cvList.add(values);
+        cvList.add(values1);
+        cvList.add(values2);
+        cvList.add(values3);
+
+        for (ContentValues cv : cvList) {
+            getContentResolver().insert(TermEntry.CONTENT_URI_TERMS, cv);
+        }
 
         // Create a ContentValues object where column names are the keys,
         // and Course attributes are the the values.
@@ -391,22 +399,27 @@ public class TermsList extends AppCompatActivity
         courseValues15.put(CourseEntry.COLUMN_COURSE_MENTOR_EMAIL, "JorgeT@email.com");
 
         // Insert a new row into the database and return the ID of the new row
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues1);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues2);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues3);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues4);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues5);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues6);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues7);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues8);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues9);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues10);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues11);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues12);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues13);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues14);
-        getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, courseValues15);
+        ArrayList<ContentValues> cvCourseList = new ArrayList<>();
+        cvCourseList.add(courseValues);
+        cvCourseList.add(courseValues1);
+        cvCourseList.add(courseValues2);
+        cvCourseList.add(courseValues3);
+        cvCourseList.add(courseValues4);
+        cvCourseList.add(courseValues5);
+        cvCourseList.add(courseValues6);
+        cvCourseList.add(courseValues7);
+        cvCourseList.add(courseValues8);
+        cvCourseList.add(courseValues9);
+        cvCourseList.add(courseValues10);
+        cvCourseList.add(courseValues11);
+        cvCourseList.add(courseValues12);
+        cvCourseList.add(courseValues13);
+        cvCourseList.add(courseValues14);
+        cvCourseList.add(courseValues15);
+
+        for (ContentValues cv : cvCourseList) {
+            getContentResolver().insert(CourseEntry.CONTENT_URI_COURSES, cv);
+        }
 
         // Create a ContentValues object where column names are the keys,
         // and assessment attributes are the the values.
@@ -551,25 +564,30 @@ public class TermsList extends AppCompatActivity
                 "the software program you created in Task 1 works. It must be detailed and clear to the reader.");
 
         // Insert a new row into the database and return the ID of the new row
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues1);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues2);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues3);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues4);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues5);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues6);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues7);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues8);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues9);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues10);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues11);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues12);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues13);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues14);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues15);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues16);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues17);
-        getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, assessmentValues18);
+        ArrayList<ContentValues> cvAssessmentList = new ArrayList<>();
+        cvAssessmentList.add(assessmentValues);
+        cvAssessmentList.add(assessmentValues1);
+        cvAssessmentList.add(assessmentValues2);
+        cvAssessmentList.add(assessmentValues3);
+        cvAssessmentList.add(assessmentValues4);
+        cvAssessmentList.add(assessmentValues5);
+        cvAssessmentList.add(assessmentValues6);
+        cvAssessmentList.add(assessmentValues7);
+        cvAssessmentList.add(assessmentValues8);
+        cvAssessmentList.add(assessmentValues9);
+        cvAssessmentList.add(assessmentValues10);
+        cvAssessmentList.add(assessmentValues11);
+        cvAssessmentList.add(assessmentValues12);
+        cvAssessmentList.add(assessmentValues13);
+        cvAssessmentList.add(assessmentValues14);
+        cvAssessmentList.add(assessmentValues15);
+        cvAssessmentList.add(assessmentValues16);
+        cvAssessmentList.add(assessmentValues17);
+        cvAssessmentList.add(assessmentValues18);
+
+        for (ContentValues cv : cvAssessmentList) {
+            getContentResolver().insert(AssessmentEntry.CONTENT_URI_ASSESSMENTS, cv);
+        }
     }
 
 }
